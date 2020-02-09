@@ -1,0 +1,1 @@
+- https://www.mockplus.com/blog/post/css-animation-examples
