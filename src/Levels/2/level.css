@@ -1,0 +1,28 @@
+
+.shape2:after {
+    /* content: '0'; */
+}
+
+
+@keyframes update {
+    0% {
+        content: '1';
+    }
+    50% {
+        content: '0';
+        /* padding: 2%; */
+    }
+}
+
+@keyframes updateOdd {
+    0% {
+        content: '0';
+    }
+    33% {
+        content: '1';
+        /* padding: 2%; */
+    }
+    67% {
+        content: '2';
+    }
+}

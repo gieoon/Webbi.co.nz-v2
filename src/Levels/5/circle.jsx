@@ -43,7 +43,7 @@ export default class Circle extends React.Component {
             })
             console.log('updated');
             if(Number(this.state.left.replace(/[a-z]/g,'')) < 0)
-                this.state.polarity_x *= 1;
+                this.setState({polarity_x: this.state.polarity_x * 1 });
             if(Number(this.state.top.replace(/[a-z]/g,'')) < 0)
                 this.state.polarity_y *= 1;
             if(Number(this.state.left.replace(/[a-z]/g,'')) > window.innerWidth)
@@ -60,8 +60,8 @@ export default class Circle extends React.Component {
                 onClick={()=>{
                     if(this.state.b_odd)
                         this.props.f_nextLevel();
-                    else 
-                        this.props.f_wrong();
+                    // else 
+                    //     this.props.f_wrong();
                 }}
                 className="shape-circle" style={{
                 backgroundColor: `${this.state.b_odd ? this.state.oddColor : this.state.color}`,

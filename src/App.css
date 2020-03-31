@@ -3,11 +3,17 @@
   background-color: black;
   height: 100vh;
   overflow: hidden;
-  cursor: pointer;
+  /* cursor: pointer; */
+  cursor: default;
+}
+
+.App.nocursor {
+  cursor: none;
 }
 
 * {
   overflow: hidden;
+  
 }
 
 .App-logo {
@@ -56,6 +62,7 @@
   font-weight: 800;
   /* background-color: black; */
   z-index: 2;
+  pointer-events: none;
 }
 
 .wrongCount-container:after {

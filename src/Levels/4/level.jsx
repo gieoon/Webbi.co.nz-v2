@@ -1,11 +1,11 @@
 import React from 'react';
 import Square from './square.jsx';
-import './3.css';
+import './level.css';
 
 //36 * 18
-const COLUMNS = 8; 
-const ROWS = 4;
-export default class Level3 extends React.Component {
+const COLUMNS = 3; 
+const ROWS = 3;
+export default class Level2 extends React.Component {
     constructor(props){
         super(props)
         this.state = {

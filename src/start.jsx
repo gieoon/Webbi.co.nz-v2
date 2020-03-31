@@ -26,7 +26,7 @@ export default class Start extends React.Component {
                         ))
                     }
                 </h1>
-                <p>Click on it when you have found it</p>
+                <p onClick={()=>{this.props.f_wrong();}}>Click on it when you have found it</p>
                 {/* <span className="subheader">It hurts when you are wrong</span>
                 <br/>
                 <span className="subheader">Try and get the lowest score</span> */}

@@ -11,3 +11,7 @@ function App() {
 }
 
 export default App;
+
+global.getRandomInt = (max) => {
+  return Math.floor(Math.random() * Math.floor(max));
+}
