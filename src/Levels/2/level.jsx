@@ -32,10 +32,12 @@ export default class Level2 extends React.Component {
             this.forceUpdate();
         })
 
-        setInterval(()=>{
-            var el = document.getElementById('textarea');
-            el.innerHTML = el.innerHTML + "1";
-        },10);
+        // setInterval(()=>{
+        //     var el = document.getElementById('textarea');
+        //     el.innerHTML = el.innerHTML + "1";
+        // },10);
+
+        this.loopGroup();
 
         // this.loop1();
         // setInterval(()=>{
@@ -67,44 +69,60 @@ export default class Level2 extends React.Component {
         }
     }
 
+    // Steve Reich loop
+    loopGroup = () => {
+        for(var i=0;i<ROWS*COLUMNS-1;i++){
+            if(i < 33){
+
+            }
+            else if(i < 67){
+
+            }
+            else {
+
+            }
+        }
+    }
+
 
     render(){
         //console.log('this.state: ', this.state.circles);
         var count = 0;
         return(
-            <textarea 
-            id="textarea"
-            style={{
-                width:"100%",
-                height: "100vh",
-                color: "white",
-                letterSpacing: "22px",
-                fontSize: "22px",
-                lineHeight: "1.5",
-                backgroundColor: "black",
-            }}>
-                {
-                    Array.from(50).map((i,index) =>(
-                        <span key={index}>i</span>
-                    ))
-                }
-            </textarea>
-            // <div>
-            //     {this.state.circles.map((circle, index) => (
-            //         this.state.yy.map((y, index2) => (
-            //             <div key={"circle-xx-"+index+"-yy-"+index2}>
-            //                     <Square 
-            //                         id={"circle-" + count}
-            //                         index={count++}
-            //                         f_nextLevel={this.props.f_nextLevel}
-            //                         f_wrong={this.props.f_wrong}
-            //                         b_odd={index === this.state.odd_y && index2 === this.state.odd_x}
-            //                         top={index * (100 / ROWS) + 'vh'} 
-            //                         left={index2 * (100 / COLUMNS) + 'vw'} />
-            //             </div>
+            // <textarea 
+            // id="textarea"
+            // style={{
+            //     width:"100%",
+            //     height: "100vh",
+            //     color: "white",
+            //     letterSpacing: "22px",
+            //     fontSize: "22px",
+            //     lineHeight: "1.5",
+            //     backgroundColor: "black",
+            // }}>
+            //     {
+            //         Array.from(50).map((i,index) =>(
+            //             <span key={index}>i</span>
             //         ))
-            //     ))}
-            // </div>
+            //     }
+            // </textarea>
+            <div>
+                {this.state.circles.map((circle, index) => (
+                    this.state.yy.map((y, index2) => (
+                        <div key={"circle-xx-"+index+"-yy-"+index2}>
+                                <Square 
+                                    id={"circle-" + count}
+                                    index={count++}
+                                    column={index2}
+                                    f_nextLevel={this.props.f_nextLevel}
+                                    f_wrong={this.props.f_wrong}
+                                    b_odd={index === this.state.odd_y && index2 === this.state.odd_x}
+                                    top={index * (100 / ROWS) + 'vh'} 
+                                    left={index2 * (100 / COLUMNS) + 'vw'} />
+                        </div>
+                    ))
+                ))}
+            </div>
         );
     }
 }

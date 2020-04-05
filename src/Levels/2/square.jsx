@@ -19,31 +19,42 @@ export default class Square extends React.Component {
             oddColor: props.oddColor,
             currentNumber: 0,
             id: props.id,
-            index: props.index
+            index: props.index,
+            column: props.column
         }
     }
 
     componentDidMount(){
-        // setTimeout(()=>{
-        //     count++;
-        //         if(count === 2)
-        //             count = 0
-        //         // else if(count === 2)                
-        //         //     count = -1;
-        //         document.getElementById(this.props.id).innerHTML = count;
-        //     setInterval(()=>{
-        //         count++;
-        //         if(count === 2)
-        //             count = 0
-        //         // else if(count === 2)                
-        //         //     count = -1;
-        //         document.getElementById(this.props.id).innerHTML = count;
-        //         // this.setState({
-        //         //     currentNumber: count
-        //         // });
-        //     }, 10000);
-        // }, this.props.index * 10);
-        
+        //setTimeout(()=>{
+            // count++;
+            //     if(count === 2)
+            //         count = 0
+            //     // else if(count === 2)                
+            //     //     count = -1;
+            //     document.getElementById(this.props.id).innerHTML = count;
+            // setInterval(()=>{
+            //     count++;
+            //     if(count === 2)
+            //         count = 0
+            //     // else if(count === 2)                
+            //     //     count = -1;
+            //     document.getElementById(this.props.id).innerHTML = count;
+            //     // this.setState({
+            //     //     currentNumber: count
+            //     // });
+            // }, this.getAnimationSpeed());
+        //}, this.props.index * 10);
+       
+    }
+
+    getAnimationSpeed(){
+        if(this.props.column < 33){
+            return 100;
+        } else if(this.props.column < 67){
+            return 101;
+        } else {
+            return 102;
+        }
     }
 
     render(){
@@ -63,11 +74,11 @@ export default class Square extends React.Component {
                     height: `${this.state.height}`,
                     top: `${this.state.top}`,
                     left: `${this.state.left}`,
-                    animationDelay: `${getRandomInt(2000) + 'ms'}`,
-                    animationDuration: `${getRandomInt(2000) + 1000 + 'ms'}`,
+                    animationDuration: `${this.getAnimationSpeed() + 'ms'}`,
                     animationName: `${this.state.b_odd ? "updateOdd" : "update"}`
                 }}
-            >{this.props.count % 2 == 0 ? 1 : 0}
+            >
+                {/* {this.props.count % 2 == 0 ? 1 : 0} */}
             </div>
         );
     }
