@@ -1,17 +1,24 @@
 import React from 'react';
-import './App.css';
-import LevelManager from './levelManager.jsx';
+import './App.scss';
+import {Switch, Router, Route} from 'react-router-dom';
+import LandingPage from './components/LandingPage';
+import SheetPage from './components/SheetPage';
 
 function App() {
   return (
     <div className="App">
-      <LevelManager />
+      <Router>
+        <Switch>
+          <Route exact path='/'>
+            <LandingPage />
+          </Route>
+          <Route path='/pages/:pageId'>
+            <SheetPage />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
 
 export default App;
-
-global.getRandomInt = (max) => {
-  return Math.floor(Math.random() * Math.floor(max));
-}
