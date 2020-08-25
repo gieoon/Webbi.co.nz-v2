@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.scss';
-import {Switch, Router, Route} from 'react-router-dom';
+import {Switch, BrowserRouter as Router, Route} from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import SheetPage from './components/SheetPage';
 
@@ -15,6 +15,7 @@ function App() {
           <Route path='/pages/:pageId'>
             <SheetPage />
           </Route>
+          
         </Switch>
       </Router>
     </div>
