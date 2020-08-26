@@ -8,6 +8,112 @@ import {
 } from '../constants';
 // import t from '../translations';
 import Template from './templates';
+import { GoogleLogin } from 'react-google-login';
+
+export default function SheetPage({
+    
+}){
+    let { pageId } = useParams();
+
+    const [sheetData, setSheetData] = useState({}); 
+
+    useEffect(()=>{
+
+    }, []);
+
+    return(
+        <div className="SheetPage">
+            Sheet Page
+            <br/>
+            pageId: {pageId}
+
+            {/* <div id='authorize_button' onClick={()=>{handleAuthClick()}}>Authorize</div>
+            <div id='signout_button' onClick={()=>{handleSignoutClick()}}>Sign out</div> */}
+
+            <GoogleLogin
+              clientId={SHEETS_CLIENT_ID}
+              buttonText="Login"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
+            <input placeholder='Website title' id="input-title" />
+
+            <p>The content on your website is shown from this spreadsheet, edit it to update it.</p>
+            {/* <div id="new_spreadsheet" onClick={()=>{
+                createSpreadsheet((spreadsheetId)=>{
+                    readSpreadsheet(spreadsheetId);
+                })
+                
+            }}>Update Content</div> */}
+            {/* Load template based on what is selected in the dropdown in the sheet */}
+            <div>
+                {/* <h2>{t('Your website')}</h2> */}
+                <h2>Your Website</h2>
+                {/* <hr/> */}
+                <div className="Template-wrapper">
+                  <Template sheetData={sheetData} />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const responseGoogle = (response) => {
+  console.log(response);
+}
+
+// Initialization Google Sheets API
+
+
+/**
+ * Append a pre element to the body containing the given message
+ * as its text node. Used to display the results of the API call.
+ *
+ * @param {string} message Text to be placed in pre element.
+ */
+function appendPre(message) {
+    var pre = document.getElementById('content');
+    var textContent = document.createTextNode(message + '\n');
+    pre.appendChild(textContent);
+}
+
+/**
+ * Print the names and majors of students in a sample spreadsheet:
+ * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+ */
+function listMajors() {
+    window.gapi.client.sheets.spreadsheets.values.get({
+      spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
+      range: 'Class Data!A2:E',
+    }).then(function(response) {
+      var range = response.result;
+      if (range.values.length > 0) {
+        appendPre('Name, Major:');
+        for (var i = 0; i < range.values.length; i++) {
+          var row = range.values[i];
+          // Print columns A and E, which correspond to indices 0 and 4.
+          appendPre(row[0] + ', ' + row[4]);
+        }
+      } else {
+        appendPre('No data found.');
+      }
+    }, function(response) {
+      appendPre('Error: ' + response.result.error.message);
+    });
+}
+/*
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
+import {
+    SHEETS_API_KEY,
+    SHEETS_CLIENT_ID,
+    SHEETS_DISCOVERY_DOCS,
+    SHEETS_SCOPES,
+} from '../constants';
+// import t from '../translations';
+import Template from './templates';
+import { GoogleLogin } from 'react-google-login';
 
 export default function SheetPage({
     
@@ -21,28 +127,36 @@ export default function SheetPage({
     }, []);
 
     return(
-        <div>
+        <div className="SheetPage">
             Sheet Page
             <br/>
             pageId: {pageId}
 
             <div id='authorize_button' onClick={()=>{handleAuthClick()}}>Authorize</div>
             <div id='signout_button' onClick={()=>{handleSignoutClick()}}>Sign out</div>
-            <input placeholder='Website title' />
+
+            <GoogleLogin
+              clientId={SHEETS_CLIENT_ID}
+              buttonText="Login"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
+            <input placeholder='Website title' id="input-title" />
+
+            <p>The content on your website is shown from this spreadsheet, edit it to update it.</p>
             <div id="new_spreadsheet" onClick={()=>{
                 createSpreadsheet((spreadsheetId)=>{
                     readSpreadsheet(spreadsheetId);
                 })
                 
-            }}>New Spreadsheet</div>
-            {/* Load template based on what is selected in the dropdown in the sheet */}
-            <div>
-                {/* <h2>{t('Your website')}</h2> */}
-                <h2>Your Website</h2>
-                <Template sheetData={sheetData} />
-            </div>
-        </div>
+            }}>Update Content</div>
+            
     )
+}
+
+const responseGoogle = (response) => {
+  console.log(response);
 }
 
 const createSpreadsheet = async (cb) => {
@@ -50,7 +164,7 @@ const createSpreadsheet = async (cb) => {
     //TODO add username and date and project title set by user
     window.gapi.client.sheets.spreadsheets.create({
         properties: {
-          title: title
+          title: document.getElementById('input-title').value,
         }
     }).then((response) => {
         console.log('sheet creation response: ', response);
@@ -93,7 +207,7 @@ const loadClientWhenGapiReady = (script) => {
     if(script.getAttribute('gapi_processed')){
       console.log('Client is ready! Now you can access gapi. :)');
       if(window.location.hostname==='localhost'){
-        window.gapi.client.load("http://localhost:8080/_ah/api/discovery/v1/apis/metafields/v1/rest")
+        window.gapi.client.load("http://localhost:3000/_ah/api/discovery/v1/apis/metafields/v1/rest")
         .then((response) => {
           console.log("Connected to metafields API locally.");
           },
@@ -111,9 +225,6 @@ const loadClientWhenGapiReady = (script) => {
 }
 
 
-/**
- *  On load, called to load the auth2 library and API client library.
-*/
 function handleClientLoad() {
     window.gapi.load('client:auth2', initClient);
 }
@@ -124,63 +235,48 @@ function initClient() {
       clientId: SHEETS_CLIENT_ID,
       discoveryDocs: SHEETS_DISCOVERY_DOCS,
       scope: SHEETS_SCOPES
-    }).then(function () {
-        console.log('signed in!: ', SHEETS_SCOPES)
+    }).then(function (res) {
+        console.log('Signed in!: ', res)
       // Listen for sign-in state changes.
       window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-
+      // window.gapi.auth2.signIn();
       // Handle the initial sign-in state.
       updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get());
 
       // Get data and set it to state
       // setSheetData
     }, function(error) {
-        console.log(error)
-      appendPre(JSON.stringify(error, null, 2));
+
+        appendPre(JSON.stringify(error, null, 2));
     });
 }
 
 function updateSigninStatus(isSignedIn) {
+    console.log("Sign in status updated: ", isSignedIn,);
     if (isSignedIn) {
-        document.getElementById('authorize_button').style.display = 'none';
-        document.getElementById('signout_button').style.display = 'block';
+      document.getElementById('authorize_button').style.display = 'none';
+      document.getElementById('signout_button').style.display = 'block';
       listMajors();
     } else {
-        document.getElementById('authorize_button').style.display = 'block';
-        document.getElementById('signout_button').style.display = 'none';
+      document.getElementById('authorize_button').style.display = 'block';
+      document.getElementById('signout_button').style.display = 'none';
     }
 }
 
-/**
- *  Sign in the user upon button click.
- */
 function handleAuthClick(event) {
     window.gapi.auth2.getAuthInstance().signIn();
 }
 
-/**
- *  Sign out the user upon button click.
- */
 function handleSignoutClick(event) {
     window.gapi.auth2.getAuthInstance().signOut();
 }
 
-/**
- * Append a pre element to the body containing the given message
- * as its text node. Used to display the results of the API call.
- *
- * @param {string} message Text to be placed in pre element.
- */
 function appendPre(message) {
     var pre = document.getElementById('content');
     var textContent = document.createTextNode(message + '\n');
     pre.appendChild(textContent);
 }
 
-/**
- * Print the names and majors of students in a sample spreadsheet:
- * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
- */
 function listMajors() {
     window.gapi.client.sheets.spreadsheets.values.get({
       spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
@@ -201,3 +297,4 @@ function listMajors() {
       appendPre('Error: ' + response.result.error.message);
     });
 }
+*/

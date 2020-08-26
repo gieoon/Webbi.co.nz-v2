@@ -7,3 +7,10 @@ export const SHEETS_DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
 export const SHEETS_SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
+/*
+export const SHEETS_SCOPES = [
+    'https://www.googleapis.com/auth/analytics.readonly',
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/spreadsheets'
+];
+*/

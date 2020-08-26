@@ -1,1 +1,2 @@
-- https://www.mockplus.com/blog/post/css-animation-examples
+# Deployment
+Firestore deployment
