@@ -1,3 +1,11 @@
+export const ENVIRONMENT = 
+    "DEVELOP"; 
+    // "PRODUCTION";
+
+export const API_ENDPOINT = ENVIRONMENT === "DEVELOP" 
+    ? 'http://localhost:8080' 
+    : "";
+
 export const SHEETS_API_KEY = 'AIzaSyDEVhwjTDpZuUVGE5jjQWCVssC9nKWVgdY';
 
 export const SHEETS_CLIENT_ID = '1082271392691-pq78njjh3pkikovinunt5v2134tj7gv1.apps.googleusercontent.com';

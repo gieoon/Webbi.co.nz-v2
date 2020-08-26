@@ -3,6 +3,23 @@ $hover-color: red;
 $anim-duration: 150ms;
 
 .SheetPage {
+    .EditBtn {
+        background-color: $primary-color;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all $anim-duration linear;
+
+        a {
+            color: white!important;
+        }
+
+        &:hover {
+            background-color: $hover-color;
+            opacity: .5;
+        }
+    }
+
     .Template-wrapper {
         margin: 1rem;
         border: 1px solid black;

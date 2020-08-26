@@ -4,7 +4,8 @@
 /node_modules
 /.pnp
 .pnp.js
-
+/server/node_modules
+/server/spreadsheet/sheets2website-1598313088115-2e587adb38c8.json
 # testing
 /coverage
 
