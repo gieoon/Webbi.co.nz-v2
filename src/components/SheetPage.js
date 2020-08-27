@@ -82,7 +82,7 @@ export default function SheetPage({
                         console.log('json: ', json);
                         var d = ingestSpreadsheetData(json);
                         setSheetData(d);
-                        setTemplate(d.Settings.Template);
+                        setTemplate(d.Settings?.Template);
                         console.log(json, sheetData);
                         setLoading(false);
                     })
@@ -111,6 +111,7 @@ export default function SheetPage({
                 <div className="Template-wrapper">
                   <TemplateSelector template={template} sheetData={sheetData} />
                 </div>
+                {/* <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vR7ldxMUU0El1dKqoTjw2ity1Ev_Tl_EwApkBG2OgoPPiUYjrYQ3e5b7pa4sDT9x8bncePp8kqh3rPq/pubhtml?widget=true&amp;headers=false" width="500px" height="500px"></iframe> */}
             </div>
             <div>
                 {loading && <LoadingPopup />}

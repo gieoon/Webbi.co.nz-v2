@@ -1,8 +1,9 @@
-
+/*
 export const ingestSpreadsheetData = (sheets) => {
     const output = {};
     for(var sheet of sheets){
-        var sheetValues = sheet.values;
+        console.log(sheet);
+        var sheetValues = sheet[0].values;
         if(sheet.range.includes('Content')){
             output['Content'] = handleContentSheet(sheetValues)
         } 
@@ -12,12 +13,115 @@ export const ingestSpreadsheetData = (sheets) => {
     }
     return output;
 }
+*/
+// After using different Sheets API, data comes back differently, but includes grid information, to get the colors we need.
+export const ingestSpreadsheetData = (sheets) => {
+    const output = {Content: {}, Settings: {}};
+    for(var sheet of sheets){
+        // console.log(sheet);
+        var sheetName = sheet.sheetName;
+        var rowValues = sheet.rowData;
+        for(var cells of rowValues){
+            // console.log(cells, sheetName)
+            
+            if(!cells.values) continue;
+                
+            if(sheetName === 'Content'){
+                // Pass by reference
+                handleContentSheet(output,cells.values);
+            } else if(sheetName === 'Settings'){
+                handleSettingsSheet(output, cells.values);
+            }
+        }
+    }
+    console.log(output);
+    return output;
+}
+
+// const CONTENT_SHEET_HEADERS = [
+//     'Page Element',
+//     'Content',
+//     'Background Color',
+//     'Text Color',
+//     'Font Size'
+// ]
+
+const handleContentSheet = (output, sheetValues) => {
+    console.log(sheetValues)
+    const id = sheetValues[0]?.userEnteredValue?.stringValue;
+    const content = (sheetValues[1]?.userEnteredValue?.stringValue || sheetValues[1]?.userEnteredValue?.numberValue);
+    const backgroundColor = convertColorFromObj(sheetValues[2]?.userEnteredFormat.backgroundColor || sheetValues[2]?.userEnteredFormat.backgroundColorStyle);
+    const color = convertColorFromObj(sheetValues[3]?.userEnteredFormat.backgroundColor || sheetValues[3]?.userEnteredFormat.backgroundColorStyle);
+    // const fontSize = sheetValues[4].textFormat.fontSize || 'initial';
+    const fontSize = (sheetValues[4]?.userEnteredValue?.numberValue || sheetValues[4]?.userEnteredValue?.stringValue || 'initial');
+    const borderRadius = (sheetValues[5]?.userEnteredValue?.stringValue || sheetValues[5]?.userEnteredValue?.numberValue) || 0;
+    const style = {
+        color, backgroundColor, fontSize, borderRadius,
+    };
+    // console.log(style);
+    // console.log(id, CONTENT_KEY_2_UI[id]);
+    output['Content'][CONTENT_KEY_2_UI[id]] = {
+        content: content,
+        style: style
+    }
+
+    return output;
+}
+
+
+const handleSettingsSheet = (output, sheetValues) => {
+    // console.log(sheetValues)
+    // Remove the preview setting
+    if(sheetValues.length < 2) 
+        return output;
+        
+    const id = sheetValues[0]?.userEnteredValue?.stringValue;
+    var content = (sheetValues[1]?.userEnteredValue?.stringValue || sheetValues[1]?.userEnteredValue?.numberValue) || "";
+    // console.log(id, content);
+    if(id  === 'Template'){
+        content = TEMPLATE_2_UI[content];
+    }
+    output['Settings'][id] = content;
+
+    return output;
+}
+
+/*
+// Create a style object to insert into the element.
+const handleCSS = (format) => {
+    const output = {};
+    output['color'] = convertColorFromObj(format.textFormat.foregroundColor || format.textFormat.foregroundColorStyle);
+    output['backgroundColor'] = convertColorFromObj(format.backgroundColor || format.backgroundColorStyle);
+    output['fontSize'] = format.textFormat.fontSize || 'initial';
+    return output;
+    // output[JS_CSS_2_UI[k]] = format[k]
+}
+*/
+/*
+const JS_CSS_2_UI = (val) => {
+    switch(val){
+        case 'foregroundColor': return 'color';
+        case 'foregroundColorStyle': return 'color';
+        default: return val;
+    }
+}
+*/
+const convertColorFromObj = (colorObj) => {
+    return `rgba(${scale(colorObj.red)},${scale(colorObj.green)},${scale(colorObj.blue)},1)`;
+}
+
+// Convert from 0 to 1 scale into 0 - 255 scale.
+const scale = (val) => {
+    return Math.round(val * 255.0);
+}
+
 
 // Convert Template keys to visible UI elements
 export const TEMPLATE_2_UI  = {
     Basic: 'BASIC',
+    Portfolio: 'PORTFOLIO',
     "Job Listing Website": "JOB_LISTING",
-    "News Website": 'NEWS_WEBSITE'
+    "News Website": 'NEWS_WEBSITE',
 }
 
 // Convert Keys to UI elements and decorate them accordingly.
@@ -45,7 +149,7 @@ export const CONTENT_KEY_2_UI = {
     'Twitter': "C_TWITTER",
     'Footer': "C_FOOTER",
 }
-
+/*
 const handleContentSheet = (sheetValues) => {
     const output = {};
     for(var entry of sheetValues){
@@ -61,7 +165,7 @@ const handleContentSheet = (sheetValues) => {
     }
     return output;
 }
-
+*/
 const STYLE_COLUMNS_DISPLAY_2_CODE = {
     'Background Color': 'background-color',
     'Text Color': 'color',
@@ -75,6 +179,7 @@ const STYLE_COLUMNS = [
     'font-size',
 ]
 
+/*
 const createCSSForElement = (styles) => {
     const s = {};
     for(var i in styles){
@@ -100,4 +205,4 @@ const handleSettingsSheet = (sheetValues) => {
     }
     return output;
 }
-
+*/

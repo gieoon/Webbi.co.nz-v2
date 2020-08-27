@@ -17,9 +17,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/new', (req, res) => {
-  console.dir(req.get('Referrer'))
+  // console.dir(req.get('Referrer'))
   DB.checkIfShortIdExists(req.query.shortId).then((document)=>{
-    console.log("spreadsheetId: ", document)
     if(!document){
       console.log('Creating new document');
       createNewSpreadsheet(req.query.name, req.get('Referrer')).then((result)=>{
@@ -28,14 +27,12 @@ app.get('/new', (req, res) => {
         // res.send(JSON.stringify({link: shareableLink}));
         // console.log('shareableLink: ', shareableLink);
         DB.saveNewSpreadsheet(req.query.shortId, result.spreadsheetId);
-        console.log(result)
+        // console.log(result)
         res.json(result);
       })
     } else {
-      console.log("ShortId already exists, accessing this spreadsheet");
-      console.log("document: ", document.spreadsheetId);
+      console.log("Spreadsheet already exists, loading");
       S.getSharedLink(document.spreadsheetId).then((result)=>{
-        console.log(result)
         res.json(result);
       })
       
@@ -46,7 +43,7 @@ app.get('/new', (req, res) => {
 app.get('/read', (req, res) => {
   console.log(req.query);
   S.readSpreadsheetData(req.query.spreadsheetId).then((result) => {
-    console.log("/read result: ", result);
+    // console.log("/read result: ", result);
     // res.json(result);
     res.send(JSON.stringify(result))
   })
@@ -59,10 +56,10 @@ app.listen(PORT, () => {
 const createNewSpreadsheet = async (name, referrer) => {
   const spreadsheetId = await S.createSpreadsheet(name);//await require('./db.js').getSpreadsheetIdAndCreateIfDoesntExist(userId, query.queryId, query.name);
   console.log('spreadsheetId: ', spreadsheetId);
-  await S.createContentDefaults(spreadsheetId, name, referrer);
+  await S.createContentDefaults(spreadsheetId, name);
   await S.addSettingsSheet(spreadsheetId);
   await S.addSettingsDefaults(spreadsheetId);
-  await S.updateSheetProperties(spreadsheetId);
+  await S.updateSheetProperties(spreadsheetId, referrer);
   const result = await S.getSharedLink(spreadsheetId);
   // require('./db.js').saveSpreadsheetIdAndLinkToDB('new_user', query.queryId, spreadsheetId, shareableLink);
   console.log('shareableLink: ', result.shareableLink)
