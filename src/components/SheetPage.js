@@ -1,22 +1,27 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
-import Template from './templates';
+import TemplateSelector from './TemplateSelector';
 import {
     API_ENDPOINT,
     SHEETS_API_KEY
 } from '../constants';
+import {ingestSpreadsheetData} from '../utils/commonFunctions';
 
 export default function SheetPage({
 
 }){
-    let { pageName } = useParams();
+    let { shortId, pageName } = useParams();
 
     const [shareableLink, setShareableLink] = useState(null);
     const [spreadsheetId, setSpreadsheetId] = useState(null);
     const [sheetData, setSheetData] = useState({}); 
+    const [template, setTemplate] = useState("");
     const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
+        //TODO remove this
+        // readSpreadsheetData("11F3uY_e13j00-pqEbMRXfuG40QnfTZ4nqiWG169x2HA");
+        // return //TODO remove this;
         const options = {
             method: 'GET',
             // mode: 'no-cors',
@@ -27,14 +32,15 @@ export default function SheetPage({
                 'Access-Control-Allow-Origin': '*'
             },
         }
-        fetch(`${API_ENDPOINT}/new?name=${pageName}`, options)
+        
+        fetch(`${API_ENDPOINT}/new?shortId=${shortId}&name=${pageName}`, options)
             .then(response => {
                 // console.log(response);
                 // return response.json();
                 return response.json()
                     .then(function(json){
                         console.log(json)
-                        setShareableLink(json.link);
+                        setShareableLink(json.shareableLink);
                         // Get all data in spreadsheet
                         setSpreadsheetId(json.spreadsheetId)
                         readSpreadsheetData(json.spreadsheetId);
@@ -48,7 +54,18 @@ export default function SheetPage({
     }, []);
 
     const readSpreadsheetData = (spreadsheetId) => {
-        fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values:batchGet?dateTimeRenderOption=FORMATTED_STRING&majorDimension=DIMENSION_UNSPECIFIED&ranges=Settings!A1:B8&ranges=A1:B8&valueRenderOption=UNFORMATTED_VALUE&key=${SHEETS_API_KEY}`,{
+        // fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values:batchGet?dateTimeRenderOption=FORMATTED_STRING&majorDimension=DIMENSION_UNSPECIFIED&ranges=Settings!A1:B8&ranges=A1:B8&valueRenderOption=UNFORMATTED_VALUE&key=${SHEETS_API_KEY}`,{
+        //     // header: `Authorization: Bearer ${ACCESS_TOKEN}`,
+        //     method: 'GET',
+        //     // mode: 'no-cors',
+        //     cache: 'no-cache',
+        //     credentials: 'same-origin',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Access-Control-Allow-Origin': '*'
+        //     },
+        // })
+        fetch(`${API_ENDPOINT}/read?spreadsheetId=${spreadsheetId}`,{
             // header: `Authorization: Bearer ${ACCESS_TOKEN}`,
             method: 'GET',
             // mode: 'no-cors',
@@ -59,18 +76,23 @@ export default function SheetPage({
                 'Access-Control-Allow-Origin': '*'
             },
         })
-        .then(res => {
-            return res.json()
-                .then(json => {
-                    console.log("json: ", json);
-                })
-        })
+            .then(res => {
+                return res.json()
+                    .then(json => {
+                        console.log('json: ', json);
+                        var d = ingestSpreadsheetData(json);
+                        setSheetData(d);
+                        setTemplate(d.Settings.Template);
+                        console.log(json, sheetData);
+                        setLoading(false);
+                    })
+            })
     }
 
     const EditBtn = () => {
         return (
             <div className="EditBtn">
-                <a href={shareableLink} rel="noopener noreferrer" target="_blank">Start editing your website.</a>
+                <a href={shareableLink} rel="noopener noreferrer" target="_blank">Start editing your new site</a>
             </div>
         )
     }
@@ -87,9 +109,21 @@ export default function SheetPage({
                 <h2>Your Website</h2>
                 {/* <hr/> */}
                 <div className="Template-wrapper">
-                  <Template sheetData={sheetData} />
+                  <TemplateSelector template={template} sheetData={sheetData} />
                 </div>
             </div>
+            <div>
+                {loading && <LoadingPopup />}
+            </div>
         </div>  
+    )
+}
+
+// Use useTrail here, to make it sparkle.
+const LoadingPopup = () => {
+    return(
+        <div className="Loading">
+            LOADING...
+        </div>
     )
 }

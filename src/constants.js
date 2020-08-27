@@ -4,7 +4,7 @@ export const ENVIRONMENT =
 
 export const API_ENDPOINT = ENVIRONMENT === "DEVELOP" 
     ? 'http://localhost:8080' 
-    : "";
+    : "https://sheets2website-1598313088115.ts.r.appspot.com";
 
 export const SHEETS_API_KEY = 'AIzaSyDEVhwjTDpZuUVGE5jjQWCVssC9nKWVgdY';
 

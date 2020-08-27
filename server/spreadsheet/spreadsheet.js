@@ -1,9 +1,12 @@
-const { GoogleSpreadsheet } = require('google-spreadsheet');
+// const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
 const { GoogleAuth } = require('google-auth-library');
+
+const {SPREADSHEET_READ_RANGES} = require('../constants.js');
+const { promises } = require('dns');
 
 // const SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 const SCOPES = [
@@ -51,45 +54,31 @@ async function getAuthToken() {
 	return authToken;
 }
 
-
-exports.writeHeaders = function(spreadsheetId){
-	console.log('writing default headers');
-	let values = [
-		['Page Title'], 
-		['Header at Top'], 
-		['Section'], 
-		['Section'], 
-		['Section']
+exports.createContentDefaults = function(spreadsheetId, name, referrer){
+	const values = [
+		['Page Element','Content','Background Color', 'Text Color', 'Font Size'],
+		['Page Title', name,'', '', ''], 
+		['Header at Top','My New Website','', '', ''], 
+		['Section 1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum','', '', ''],
+		['Section 2', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum','', '', ''],
+		['Section 3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum','', '', ''],
+		['Email', 'example@gmail.com','', '', ''],
+		['Phone Number', '0221231232','', '', ''],
+		['Mobile Number', '0221231232','', '', ''],
+		['Facebook', 'https://facebook.com/','', '', ''],
+		['LinkedIn', 'https://linkedin.com','', '', ''],
+		['Instagram', 'https://instagram.com','', '', ''],
+		['Twitter', 'https://twitter.com','', '', ''],
+		['Footer', 'Built with Webbi','', '', ''],
+		Make this a hyperlink through a separate update
+		['Go to your website','', '', '','']
 	];
+	// console.dir(values);
 	var resource = { values };
 	var request = {
 		spreadsheetId: spreadsheetId,
-		range: 'A1:A5', // 'A1:A'
-		valueInputOption: 'USER_ENTERED',
-		resource
-	};
-	sheets.spreadsheets.values.append(request, function(err, response){
-		if(err){
-			console.error('Error writing default headers to spreadsheet: ', err);
-			return;
-		}
-		// console.log('Successfully wrote default headers: ', JSON.stringify(response, null, 2));
-	});
-}
-
-exports.writeDefaults = function(spreadsheetId){
-	console.log('Writing default data');
-	let values = [
-		['My Custom Website'], 
-		['My Custom Website'], 
-		['Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'],
-		['Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'],
-		['Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum']
-	];
-	var resource = { values };
-	var request = {
-		spreadsheetId: spreadsheetId,
-		range: 'B1:B5',
+		// range: `Content!A1:E${values.length}`,
+		range: "Content!A1:E20",
 		valueInputOption: 'USER_ENTERED',
 		resource
 	};
@@ -186,7 +175,6 @@ const getSheetIdFromName = async (spreadsheetId) => {
         includeGridData: false,  
         auth: auth,
     };
-
 	res = await sheets.spreadsheets.get(request)
 	return res;
 }
@@ -198,38 +186,98 @@ exports.updateSheetProperties = async function(spreadsheetId){
 	// https://sheets.googleapis.com/v4/spreadsheets/spreadsheetId?&fields=sheets.properties
 
 	for(var sheet of _sheets){
-		console.log(sheet)
+		// console.log(sheet)
 		var sheetId = sheet.properties.sheetId;
 		var sheetTitle = sheet.properties.title;
 		await sheets.spreadsheets.batchUpdate({
 			spreadsheetId: spreadsheetId,
 			requestBody: {
-				requests: [{
-					// Update first column to be wider
-					updateDimensionProperties: {
-						range: {
-							sheetId: sheetId,
-							dimension: "COLUMNS",
-							startIndex: 0,
-							endIndex: 2
+				requests: [
+					{
+						updateDimensionProperties: {
+							range: {
+								sheetId: sheetId,
+								dimension: "COLUMNS",
+								startIndex: 2,
+								endIndex: 5
+							},
+							properties: {
+								pixelSize: 120,
+							},
+							fields: "pixelSize"
 						},
-						properties: {
-							pixelSize: 260,
+					},
+					{// Update first two columns to be wider
+						updateDimensionProperties: {
+							range: {
+								sheetId: sheetId,
+								dimension: "COLUMNS",
+								startIndex: 0,
+								endIndex: 2
+							},
+							properties: {
+								pixelSize: 260,
+							},
+							fields: "pixelSize"
 						},
-						fields: "pixelSize"
 					}
-				}]
+				]
 			}
 		})
-		// Update Content sheet by itself.
-		if(sheetTitle === 'Settings')
-			await createTemplatesDropdown(spreadsheetId, sheetId);
+		// Update Specific Sheet
+		if(sheetTitle === 'Settings'){
+			await createSettingsDefault(spreadsheetId, sheetId);
+		}
+		else if(sheetTitle === 'Content'){
+			await createContentCSSDefaults(spreadsheetId, sheetId);
+			await freezeFirstRow(spreadsheetId, sheetId);
+		}
 	}
 }
 
+const createContentCSSDefaults = async (spreadsheetId, sheetId) => {
+	const values = [];
+	for(var y=0;y<13;y++){
+		for(var x=0;x<3;x++){  
+			values.push(
+				{ 
+					updateCells: {
+						rows: [{
+							values: [{
+								userEnteredFormat: {
+									backgroundColor: {
+										red: Math.random(),
+										green: Math.random(),
+										blue: Math.random(),
+										alpha: 1.0,
+									},
+								},
+							}]
+						}],
+						fields: "*",
+						range: {
+							sheetId: sheetId,
+							startRowIndex: y + 1,
+							endRowIndex: y + 1 + 1,
+							startColumnIndex: x + 2,
+							endColumnIndex: x + 2 + 1,
+						}
+					}
+				},
+			);
+		}
+	}
 
-const createTemplatesDropdown = async (spreadsheetId, sheetId) => {
-	// console.log('createTemplatesDropdown')
+	await sheets.spreadsheets.batchUpdate({
+		spreadsheetId: spreadsheetId,
+		requestBody: {
+			requests: values
+		}
+	})
+}
+
+
+const createSettingsDefault = async (spreadsheetId, sheetId) => {
 	await sheets.spreadsheets.batchUpdate({
 		spreadsheetId: spreadsheetId,
 		requestBody: {
@@ -250,7 +298,7 @@ const createTemplatesDropdown = async (spreadsheetId, sheetId) => {
 								values: [
 									{userEnteredValue: "Basic"},
 									{userEnteredValue: "Job Listing Website"},
-									{userEnteredValue: "Event Website"}
+									{userEnteredValue: "News Website"}
 								]
 							},
 							inputMessage: 'Select a template',
@@ -331,7 +379,7 @@ const createTemplatesDropdown = async (spreadsheetId, sheetId) => {
 						}
 					}
 				},
-				{ // Section Background Color
+				{ // Section 1 Background Color
 					updateCells: {
 						rows: [{
 							values: [{
@@ -355,7 +403,7 @@ const createTemplatesDropdown = async (spreadsheetId, sheetId) => {
 						}
 					}
 				},
-				{ // Section Background Color
+				{ // Section 2 Background Color
 					updateCells: {
 						rows: [{
 							values: [{
@@ -379,7 +427,7 @@ const createTemplatesDropdown = async (spreadsheetId, sheetId) => {
 						}
 					}
 				},
-				{ // Section Background Color
+				{ // Section 3 Background Color
 					updateCells: {
 						rows: [{
 							values: [{
@@ -416,9 +464,9 @@ exports.addSettingsDefaults = async function(spreadsheetId){
 		['Primary Background Color', 'blue'], 
 		['Hovered Background Color', 'green'], 
 		['Text Color', 'white'],
-		['Section Background Color', 'black'],
-		['Section Background Color', 'red'],
-		['Section Background Color', '#FF0'],
+		['Section 1 Background Color', 'black'],
+		['Section 2 Background Color', 'red'],
+		['Section 3 Background Color', '#FF0'],
 	];
 	var resource = { values };
 	var request = {
@@ -435,9 +483,47 @@ exports.addSettingsDefaults = async function(spreadsheetId){
 		else {
 			// console.log('%d cells updated.', response.updatedCells);
 		}
-		// console.log('Successfully wrote default content: ', JSON.stringify(response, null, 2));
+
 	});
 }
+
+
+exports.readSpreadsheetData = async (spreadsheetId) => {
+	let ranges = SPREADSHEET_READ_RANGES;
+
+	const promise = new Promise((resolve, reject)=>{
+	// const promises = [];
+	// for(var range of ranges){
+		// promises.push(
+			// sheets.spreadsheets.values.batchGet({
+			sheets.spreadsheets.get({
+				spreadsheetId,
+				ranges, // range,
+				includeGridData: true
+			}, (err, result) => {
+				if (err) {
+					console.log(err);
+					// return {};
+					reject("Could not retrieve spreadsheet data 1: ", err);
+				} else {
+					console.dir(result.data.sheets[0].data);
+					// resolve(result.data.valueRanges);
+					resolve([result.data.sheets[0].data, result.data.sheets[1].data]);
+					// return result.data.valueRanges;
+				}
+			})
+		})
+		// )
+	// }
+	// return Promise.all(promises).then((result)=>{
+	return promise.then(result => {
+		// console.log("result: ", result);
+		return result;
+	}, (err)=>{
+		console.error("Failed to retrieve spreadsheet data 2: ", err);
+	});
+}
+
 
 exports.getSharedLink = async function(fileId){
 	var promise = new Promise(function(resolve, reject){
@@ -447,11 +533,10 @@ exports.getSharedLink = async function(fileId){
 			fields: 'webViewLink'
 		}, function(err, result){
 			if(err) {
-				console.error(err);
-				reject("Could not retrieve sharedLink");
+				reject("Could not retrieve sharedLink: ", err);
 			}
 			else {
-				//console.log('Got shared link: ', result.data.webViewLink);
+
 				resolve({shareableLink: result.data.webViewLink, spreadsheetId: fileId});
 			}
 		});
@@ -460,6 +545,38 @@ exports.getSharedLink = async function(fileId){
 		return result;
 	}, (err)=>{
 		console.error("Failed to retrieve SharedLink: ", err);
+	});
+}
+
+
+const freezeFirstRow = async (spreadsheetId, sheetId) => {
+	let requests = [];
+	requests.push({
+		updateSheetProperties: {
+			properties: {
+				sheetId: sheetId,
+				gridProperties: {
+					rowCount: 50,
+					columnCount: 5,
+					frozenRowCount: 1
+				}
+			},
+			fields: 'gridProperties',
+		},
+	})
+
+	const batchUpdateRequest = {requests};
+	sheets.spreadsheets.batchUpdate({
+		spreadsheetId,
+		resource: batchUpdateRequest,
+	}, function(err, response){
+		if(err) {
+			console.error('ERROR freezing first row: ', err);
+			return;
+		} else {
+			console.log('Froze first row');
+		}
+		// console.log('FROZE FIRST ROW with response: ', JSON.stringify(response, null, 2));
 	});
 }
 
@@ -600,42 +717,3 @@ exports.getSharedLink = async function(fileId){
 // }
 
 
-
-// function freezeFirstRow(spreadsheetId){
-// 	console.log('freezing first row');
-// 	// const gridProperties = {
-// 	// 	frozenRowCount: 1,
-// 	// }
-// 	let requests = [];
-// 	requests.push({
-// 		updateSheetProperties: {
-// 			properties: {
-// 				gridProperties: {
-// 					rowCount: 50,
-// 					columnCount: 5,
-// 					frozenRowCount: 1
-// 				}
-// 			},
-// 			fields: 'gridProperties',
-// 		},
-// 	})
-
-// 	const batchUpdateRequest = {requests};
-// 	sheets.spreadsheets.batchUpdate({
-// 		spreadsheetId,
-// 		resource: batchUpdateRequest,
-// 	}, function(err, response){
-// 		if(err) {
-// 			console.error('ERROR freezing first row: ', err);
-// 			return;
-// 		}
-// 		//console.log('FROZE FIRST ROW with response: ', JSON.stringify(response, null, 2));
-// 	});
-// 	// sheets.spreadsheets.get(request, function(err, response){
-// 	// 	if(err){
-// 	// 		console.error('ERROR freezing first row: ', err);
-// 	// 		return;
-// 	// 	}
-// 	// 	console.log('FROZE FIRST ROW with response: ', JSON.stringify(response, null, 2));
-// 	// })
-// }

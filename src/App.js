@@ -35,7 +35,7 @@ function App() {
           <Route exact path='/about'>
             <About />
           </Route>
-          <Route path='/pages/:pageName'>
+          <Route path='/pages/:shortId/:pageName?'>
             <SheetPage />
           </Route>
           

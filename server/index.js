@@ -1,6 +1,6 @@
 
 const S = require('./spreadsheet/spreadsheet.js');
-const db = require('./db/db.js');
+const DB = require('./db/db.js');
 
 const app = require('express')();
 const PORT = 8080;
@@ -17,25 +17,49 @@ app.get('/', (req, res) => {
 })
 
 app.get('/new', (req, res) => {
-  console.log(req.query)
-  createNewSpreadsheet(req.query.name).then((result)=>{
-    // res.setHeader('Content-Type', 'text/html');
-    // res.setHeader('Content-Type', 'application/json');
-    // res.send(JSON.stringify({link: shareableLink}));
-    // console.log('shareableLink: ', shareableLink);
-    res.json(result);
+  console.dir(req.get('Referrer'))
+  DB.checkIfShortIdExists(req.query.shortId).then((document)=>{
+    console.log("spreadsheetId: ", document)
+    if(!document){
+      console.log('Creating new document');
+      createNewSpreadsheet(req.query.name, req.get('Referrer')).then((result)=>{
+        // res.setHeader('Content-Type', 'text/html');
+        // res.setHeader('Content-Type', 'application/json');
+        // res.send(JSON.stringify({link: shareableLink}));
+        // console.log('shareableLink: ', shareableLink);
+        DB.saveNewSpreadsheet(req.query.shortId, result.spreadsheetId);
+        console.log(result)
+        res.json(result);
+      })
+    } else {
+      console.log("ShortId already exists, accessing this spreadsheet");
+      console.log("document: ", document.spreadsheetId);
+      S.getSharedLink(document.spreadsheetId).then((result)=>{
+        console.log(result)
+        res.json(result);
+      })
+      
+    }
   })
 });
+
+app.get('/read', (req, res) => {
+  console.log(req.query);
+  S.readSpreadsheetData(req.query.spreadsheetId).then((result) => {
+    console.log("/read result: ", result);
+    // res.json(result);
+    res.send(JSON.stringify(result))
+  })
+})
 
 app.listen(PORT, () => {
   console.log('Listening on port: ', PORT);
 })
 
-const createNewSpreadsheet = async (name) => {
+const createNewSpreadsheet = async (name, referrer) => {
   const spreadsheetId = await S.createSpreadsheet(name);//await require('./db.js').getSpreadsheetIdAndCreateIfDoesntExist(userId, query.queryId, query.name);
   console.log('spreadsheetId: ', spreadsheetId);
-  await S.writeHeaders(spreadsheetId);
-  await S.writeDefaults(spreadsheetId);
+  await S.createContentDefaults(spreadsheetId, name, referrer);
   await S.addSettingsSheet(spreadsheetId);
   await S.addSettingsDefaults(spreadsheetId);
   await S.updateSheetProperties(spreadsheetId);
