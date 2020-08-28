@@ -16,7 +16,7 @@ export default function TemplateSelector({
             default: return <></>
         }
     }
-    console.log("sheetData: ", sheetData);
+    // console.log("sheetData: ", sheetData);
     return (
         <div>
             {

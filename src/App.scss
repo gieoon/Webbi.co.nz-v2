@@ -3,16 +3,42 @@ $hover-color: red;
 $anim-duration: 150ms;
 
 .SheetPage {
+    .TemplateSwapper {
+        position: fixed;
+        background-color: $primary-color;
+        border-bottom-left-radius: 16px;
+        transition: all $anim-duration linear;
+        right: 0;
+        top: 0;
+        height: 50px;
+
+        span {
+            line-height: .5rem;
+        }
+    }
+
     .EditBtn {
         background-color: $primary-color;
         padding: 1rem;
         text-align: center;
         cursor: pointer;
         transition: all $anim-duration linear;
+        position: fixed;
+        margin: auto;
+        left: 0;
+        right: 0;
+        width: fit-content;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
 
         a {
             color: white!important;
+
+            span {
+                line-height: .5rem;
+            }
         }
+
 
         &:hover {
             background-color: $hover-color;
@@ -21,8 +47,8 @@ $anim-duration: 150ms;
     }
 
     .Template-wrapper {
-        margin: 1rem;
-        border: 1px solid black;
+        // margin: 1rem;
+        // border: 1px solid black;
     }
 
     #new_spreadsheet {

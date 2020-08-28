@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import TemplateSelector from './TemplateSelector';
+import TemplateSwapper from './TemplateSwapper'
 import {
     API_ENDPOINT,
     SHEETS_API_KEY
@@ -92,7 +93,9 @@ export default function SheetPage({
     const EditBtn = () => {
         return (
             <div className="EditBtn">
-                <a href={shareableLink} rel="noopener noreferrer" target="_blank">Start editing your new site</a>
+                <a href={shareableLink} rel="noopener noreferrer" target="_blank">
+                    <span>Start editing your site</span>
+                </a>
             </div>
         )
     }
@@ -104,9 +107,12 @@ export default function SheetPage({
             { shareableLink &&
                 <EditBtn />
             }
+            {
+                shareableLink && <TemplateSwapper template={template} setTemplate={setTemplate} />
+            }
             <div>
                 {/* <h2>{t('Your website')}</h2> */}
-                <h2>Your Website</h2>
+                {/* <h2>Your Website</h2> */}
                 {/* <hr/> */}
                 <div className="Template-wrapper">
                   <TemplateSelector template={template} sheetData={sheetData} />
