@@ -7,6 +7,7 @@ import About from './components/About';
 import SheetPage from './components/SheetPage';
 
 import * as firebase from "firebase/app";
+import 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBiw4ORAbMmxImx4qPGq9JAFtUI36PeYQ0",
@@ -20,6 +21,9 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+// console.log(firebase);
+const db = firebase.firestore();
+global.db = db;
 
 function App() {
   return (

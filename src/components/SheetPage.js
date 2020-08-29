@@ -3,8 +3,11 @@ import {useParams} from 'react-router-dom';
 import TemplateSelector from './TemplateSelector';
 import TemplateSwapper from './TemplateSwapper'
 import {
-    API_ENDPOINT,
-    SHEETS_API_KEY
+    Edit
+} from 'react-feather';
+
+import {
+    API_ENDPOINT
 } from '../constants';
 import {ingestSpreadsheetData} from '../utils/commonFunctions';
 
@@ -94,7 +97,8 @@ export default function SheetPage({
         return (
             <div className="EditBtn">
                 <a href={shareableLink} rel="noopener noreferrer" target="_blank">
-                    <span>Start editing your site</span>
+                    <span>Edit your site</span>
+                    <Edit />
                 </a>
             </div>
         )

@@ -1,5 +1,6 @@
-$primary-color: blue;
-$hover-color: red;
+$primary-color: orange;
+$hover-color: rgb(10, 196, 10);
+$selected-color: turquoise;
 $anim-duration: 150ms;
 
 .SheetPage {
@@ -11,9 +12,25 @@ $anim-duration: 150ms;
         right: 0;
         top: 0;
         height: 50px;
+        padding: 1rem;
+        color: rgba(0,0,0,.9);
 
         span {
             line-height: .5rem;
+        }
+
+        .TemplateItem {
+            background-color: {
+
+            }
+
+            &.selected {
+                background-color: $selected-color;
+            }
+        }
+
+        &:hover {
+            background-color: $hover-color;
         }
     }
 
@@ -27,6 +44,7 @@ $anim-duration: 150ms;
         margin: auto;
         left: 0;
         right: 0;
+        top: 0;
         width: fit-content;
         border-bottom-left-radius: 16px;
         border-bottom-right-radius: 16px;

@@ -21,7 +21,6 @@ export default function Basic({
 
     return(
         <div className="Basic">
-            <span>Basic template</span>
             <h2 id='C_TOP_HEADER' style={getStyle('C_TOP_HEADER')}>{get('C_TOP_HEADER')}</h2>
             {/* <title>{get('C_PAGE_TITLE')}</title> */}
             <div>
