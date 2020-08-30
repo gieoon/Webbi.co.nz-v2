@@ -85,7 +85,7 @@ export default function SheetPage({
         return (
             <div className="EditBtn">
                 <a href={shareableLink} rel="noopener noreferrer" target="_blank">
-                    <span>Edit your site</span>
+                    <span>Edit your content</span>
                     <Edit />
                 </a>
             </div>

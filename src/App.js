@@ -28,25 +28,41 @@ global.db = db;
 function App() {
   return (
     <div className="App">
-      <Router>
-        <Switch>
-          <Route exact path='/'>
-            <LandingPage />
-          </Route>
-          <Route exact path='/pricing'>
-            <Pricing />
-          </Route>
-          <Route exact path='/about'>
-            <About />
-          </Route>
-          <Route path='/page/:shortId/:pageName?'>
-            <SheetPage />
-          </Route>
-          
-        </Switch>
-      </Router>
+      <DebugRouter>
+        <Router>
+          <Switch>
+            <Route exact path='/'>
+              <LandingPage />
+            </Route>
+            <Route exact path='/pricing'>
+              <Pricing />
+            </Route>
+            <Route exact path='/about'>
+              <About />
+            </Route>
+            <Route path='/page/:shortId/:pageName?'>
+              <SheetPage />
+            </Route>
+            
+          </Switch>
+        </Router>
+      </DebugRouter>
     </div>
   );
 }
 
 export default App;
+
+class DebugRouter extends Router {
+  constructor(props){
+    super(props);
+    console.log('initial history is: ', JSON.stringify(this.history, null,2))
+    console.log('window.location.host: ', window.location.host);
+    this.history.listen((location, action)=>{
+      console.log(
+        `The current URL is ${location.pathname}${location.search}${location.hash}`
+      )
+      console.log(`The last navigation action was ${action}`, JSON.stringify(this.history, null,2));
+    });
+  }
+}
