@@ -1,6 +1,6 @@
 exports.SPREADSHEET_READ_RANGES = [
-    'Settings!A1:B10',
-    'Content!A2:E'// 'Content!A2:E14'
+    //'Settings!A1:B10',
+    'Content!A2:G'// 'Content!A2:E14'
 ];
 
 exports.SPREADSHEETS_COLLECTION = 'Spreadsheets_TEST';

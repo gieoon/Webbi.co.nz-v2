@@ -2,6 +2,10 @@ import React, { useEffect } from 'react';
 import './Basic.scss';
 import {Mail, Phone, Twitter, Facebook, Linkedin, Instagram} from 'react-feather';
 import webbi from '../../assets/icon.png';
+import EditableHeader from '../../editables/EditableHeader';
+import EditableFooter from '../../editables/EditableFooter';
+import ContentList from '../ContentList';
+
 // console.log(webbi)
 export default function Basic({
     data
@@ -9,20 +13,30 @@ export default function Basic({
     console.log('Basic template: ', data);
 
     useEffect(()=>{
-        document.title = get('C_PAGE_TITLE');
+        // document.title = get('C_PAGE_TITLE');
     });
 
-    const get = (key) => {
-        return data.Content[key]?.content;
-    }
-    const getStyle = (key) => {
-        return data.Content[key]?.style;
-    }
+    // const get = (key) => {
+    //     return data.Content[key]?.content;
+    // }
+    // const getStyle = (key) => {
+    //     return data.Content[key]?.style;
+    // }
 
     return(
         <div className="Basic">
+
+            <EditableHeader />
+            <ContentList contents={data}  />
+            <EditableFooter />
+
+            
+        </div>
+    )
+}
+
+/*
             <h2 id='C_TOP_HEADER' style={getStyle('C_TOP_HEADER')}>{get('C_TOP_HEADER')}</h2>
-            {/* <title>{get('C_PAGE_TITLE')}</title> */}
             <div>
                 <p id="C_SECTION_1" style={getStyle('C_SECTION_1')}>{get('C_SECTION_1')}</p>
             </div>
@@ -64,6 +78,5 @@ export default function Basic({
                     <span>{get('C_FOOTER')}</span>
                 </div>
             </div>
-        </div>
-    )
-}
+
+*/

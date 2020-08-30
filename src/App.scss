@@ -7,9 +7,9 @@ $anim-duration: 150ms;
     .TemplateSwapper {
         position: fixed;
         background-color: $primary-color;
-        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
         transition: all $anim-duration linear;
-        right: 0;
+        left: 0;
         top: 0;
         height: 50px;
         padding: 1rem;
@@ -61,6 +61,23 @@ $anim-duration: 150ms;
         &:hover {
             background-color: $hover-color;
             opacity: .5;
+        }
+    }
+
+    .Preview {
+        position: fixed;
+        top: 0;
+        right: 0;
+        background-color: $primary-color;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all $anim-duration linear;
+        position: fixed;
+        border-bottom-left-radius: 16px;
+
+        &:hover {
+            background-color: $hover-color;
         }
     }
 
@@ -144,5 +161,17 @@ $anim-duration: 150ms;
     &:hover {
         background-color: $hover-color;
         color: white;
+    }
+}
+
+// Upon highlighting objects to be changed
+.Editable {
+    transition: all $anim-duration linear;
+    &:hover {
+        background-color: grey;
+    }
+
+    * {
+        transition: all $anim-duration linear;
     }
 }

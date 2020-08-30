@@ -43,10 +43,13 @@ app.get('/new', (req, res) => {
 app.get('/read', (req, res) => {
   console.log(req.query);
   S.readSpreadsheetData(req.query.spreadsheetId).then((result) => {
-    // console.log("/read result: ", result);
-    // res.json(result);
     res.send(JSON.stringify(result))
   })
+})
+
+app.get('/styles', (req, res) => {
+  console.log(req.query)
+  res.json(require(`./styles/${req.query.component}.json`));
 })
 
 app.listen(PORT, () => {
@@ -57,8 +60,8 @@ const createNewSpreadsheet = async (name, referrer) => {
   const spreadsheetId = await S.createSpreadsheet(name);//await require('./db.js').getSpreadsheetIdAndCreateIfDoesntExist(userId, query.queryId, query.name);
   console.log('spreadsheetId: ', spreadsheetId);
   await S.createContentDefaults(spreadsheetId, name);
-  await S.addSettingsSheet(spreadsheetId);
-  await S.addSettingsDefaults(spreadsheetId);
+  // await S.addSettingsSheet(spreadsheetId);
+  // await S.addSettingsDefaults(spreadsheetId);
   await S.updateSheetProperties(spreadsheetId, referrer);
   const result = await S.getSharedLink(spreadsheetId);
   // require('./db.js').saveSpreadsheetIdAndLinkToDB('new_user', query.queryId, spreadsheetId, shareableLink);

@@ -51,6 +51,7 @@ async function getAuthToken() {
 
 exports.createContentDefaults = function(spreadsheetId, name){
 	// Add empty spaces to stop overflowing
+	/*
 	const values = [
 		['Page Element','Content','Background Color', 'Text Color', 'Font Size', 'Border Radius'],
 		['Page Title', name,' ', ' ', ' '], 
@@ -67,11 +68,16 @@ exports.createContentDefaults = function(spreadsheetId, name){
 		['Twitter', 'https://twitter.com',' ', '', ''],
 		['Footer', 'Built with Webbi',' ', '', ''],
 	];
+	*/
+	// Adding new data so most of this is done in frontend, and only list is in backend.
+	const values = [
+		['Name','Image link','Description','Date', 'Price', 'Additional content']
+	];
 	// console.dir(values);
 	var resource = { values };
 	var request = {
 		spreadsheetId: spreadsheetId,
-		range: `Content!A1:E${values.length}`,
+		range: `Content!A1:G${values.length}`,
 		// range: "Content!A1:E20",
 		valueInputOption: 'USER_ENTERED',
 		resource
@@ -141,7 +147,7 @@ exports.createSpreadsheet = async function(title){
   		console.error("failed: ", err );
   	});
 }
-
+/*
 exports.addSettingsSheet = async function(spreadsheetId){
 	await sheets.spreadsheets.batchUpdate({
 		spreadsheetId: spreadsheetId,
@@ -156,7 +162,7 @@ exports.addSettingsSheet = async function(spreadsheetId){
 		}
 	})
 }
-
+*/
 const getSheetIdFromName = async (spreadsheetId) => {
 	const request = {
         spreadsheetId: spreadsheetId,
@@ -208,15 +214,37 @@ exports.updateSheetProperties = async function(spreadsheetId, referrer){
 							},
 							fields: "pixelSize"
 						},
+					},
+					{
+						// Preview Button Hyperlink
+						updateCells: {
+							rows: [{
+								values: [{
+									// hyperlink: referrer, // READONLY
+									userEnteredValue: {
+										// stringValue: 'Preview your website',
+										formulaValue: `=HYPERLINK("${referrer}","Preview your website")`
+									},
+								}]
+							}],
+							fields: '*',
+							range: {
+								sheetId: sheetId,
+								startRowIndex: 0,
+								endRowIndex: 1,
+								startColumnIndex: 5,
+								endColumnIndex: 6,
+							},
+						}
 					}
 				]
 			}
 		})
 		// Update Specific Sheet
-		if(sheetTitle === 'Settings'){
-			await createSettingsDefault(spreadsheetId, sheetId, referrer);
-		}
-		else if(sheetTitle === 'Content'){
+		// if(sheetTitle === 'Settings'){
+		// 	await createSettingsDefault(spreadsheetId, sheetId, referrer);
+		// }
+		if(sheetTitle === 'Content'){
 			await createContentCSSDefaults(spreadsheetId, sheetId);
 			await freezeFirstRow(spreadsheetId, sheetId);
 		}
@@ -225,38 +253,38 @@ exports.updateSheetProperties = async function(spreadsheetId, referrer){
 
 const createContentCSSDefaults = async (spreadsheetId, sheetId) => {
 	const values = [];
-	for(var y=0;y<13;y++){
-		for(var x=0;x<2;x++){  
-			values.push(
-				{ 
-					updateCells: {
-						rows: [{
-							values: [{
-								userEnteredFormat: {
-									backgroundColor: {
-										red: x === 0 ? 0 : 1, //Math.random(),
-										green: x === 0 ? 0 : 1, //Math.random(),
-										blue: x === 0 ? 0 : 1, //Math.random(),
-										alpha: 1.0,
-									},
-								},
-							}]
-						}],
-						fields: "*",
-						range: {
-							sheetId: sheetId,
-							startRowIndex: y + 1,
-							endRowIndex: y + 1 + 1,
-							startColumnIndex: x + 2,
-							endColumnIndex: x + 2 + 1,
-						}
-					}
-				},
-			);
-		}
-	}
+	// for(var y=0;y<13;y++){
+	// 	for(var x=0;x<2;x++){  
+	// 		values.push(
+	// 			{ 
+	// 				updateCells: {
+	// 					rows: [{
+	// 						values: [{
+	// 							userEnteredFormat: {
+	// 								backgroundColor: {
+	// 									red: x === 0 ? 0 : 1, //Math.random(),
+	// 									green: x === 0 ? 0 : 1, //Math.random(),
+	// 									blue: x === 0 ? 0 : 1, //Math.random(),
+	// 									alpha: 1.0,
+	// 								},
+	// 							},
+	// 						}]
+	// 					}],
+	// 					fields: "*",
+	// 					range: {
+	// 						sheetId: sheetId,
+	// 						startRowIndex: y + 1,
+	// 						endRowIndex: y + 1 + 1,
+	// 						startColumnIndex: x + 2,
+	// 						endColumnIndex: x + 2 + 1,
+	// 					}
+	// 				}
+	// 			},
+	// 		);
+	// 	}
+	// }
 	// Stylize Header
-	for(var x=0;x<5;x++){
+	for(var x=0;x<6;x++){
 		values.push(
 			{ 
 				updateCells: {
@@ -307,7 +335,7 @@ const createContentCSSDefaults = async (spreadsheetId, sheetId) => {
 	})
 }
 
-
+/*
 const createSettingsDefault = async (spreadsheetId, sheetId, referrer) => {
 	await sheets.spreadsheets.batchUpdate({
 		spreadsheetId: spreadsheetId,
@@ -509,8 +537,8 @@ const createSettingsDefault = async (spreadsheetId, sheetId, referrer) => {
 		}
 	})
 }
-
-
+*/
+/*
 exports.addSettingsDefaults = async function(spreadsheetId){
 	let values = [
 		['Preview your website'],
@@ -542,7 +570,7 @@ exports.addSettingsDefaults = async function(spreadsheetId){
 
 	});
 }
-
+*/
 
 exports.readSpreadsheetData = async (spreadsheetId) => {
 	let ranges = SPREADSHEET_READ_RANGES;
@@ -565,8 +593,8 @@ exports.readSpreadsheetData = async (spreadsheetId) => {
 					console.dir(result.data.sheets[0].data);
 					// resolve(result.data.valueRanges);
 					resolve([
-						{...{rowData: result.data.sheets[0].data[0].rowData}, ...{sheetName: 'Content'}}, 
-						{...{rowData: result.data.sheets[1].data[0].rowData}, ...{sheetName: 'Settings'}},
+						{...{rowData: result.data.sheets[0].data[0].rowData || [[]]}, ...{sheetName: 'Content'}}, 
+						// {...{rowData: result.data.sheets[1].data[0].rowData}, ...{sheetName: 'Settings'}},
 					]);
 					// return result.data.valueRanges;
 				}

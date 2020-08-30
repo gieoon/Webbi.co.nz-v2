@@ -18,14 +18,11 @@ export default function SheetPage({
 
     const [shareableLink, setShareableLink] = useState(null);
     const [spreadsheetId, setSpreadsheetId] = useState(null);
-    const [sheetData, setSheetData] = useState({}); 
+    const [sheetData, setSheetData] = useState([]); 
     const [template, setTemplate] = useState("");
     const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
-        //TODO remove this
-        // readSpreadsheetData("11F3uY_e13j00-pqEbMRXfuG40QnfTZ4nqiWG169x2HA");
-        // return //TODO remove this;
         const options = {
             method: 'GET',
             // mode: 'no-cors',
@@ -58,17 +55,6 @@ export default function SheetPage({
     }, []);
 
     const readSpreadsheetData = (spreadsheetId) => {
-        // fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values:batchGet?dateTimeRenderOption=FORMATTED_STRING&majorDimension=DIMENSION_UNSPECIFIED&ranges=Settings!A1:B8&ranges=A1:B8&valueRenderOption=UNFORMATTED_VALUE&key=${SHEETS_API_KEY}`,{
-        //     // header: `Authorization: Bearer ${ACCESS_TOKEN}`,
-        //     method: 'GET',
-        //     // mode: 'no-cors',
-        //     cache: 'no-cache',
-        //     credentials: 'same-origin',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Access-Control-Allow-Origin': '*'
-        //     },
-        // })
         fetch(`${API_ENDPOINT}/read?spreadsheetId=${spreadsheetId}`,{
             // header: `Authorization: Bearer ${ACCESS_TOKEN}`,
             method: 'GET',
@@ -83,11 +69,13 @@ export default function SheetPage({
             .then(res => {
                 return res.json()
                     .then(json => {
-                        console.log('json: ', json);
+                        console.log(json);
                         var d = ingestSpreadsheetData(json);
+                        // console.log('d: ', d);
                         setSheetData(d);
-                        setTemplate(d.Settings?.Template);
-                        console.log(json, sheetData);
+                        // setTemplate(d.Settings?.Template);
+                        setTemplate("BASIC");
+                        // console.log(json, d);
                         setLoading(false);
                     })
             })
@@ -104,6 +92,14 @@ export default function SheetPage({
         )
     }
 
+    const Preview = () => {
+        return (
+            <div className="Preview">
+                <span>Preview</span>
+            </div>
+        )
+    }
+
     return(
         <div className="SheetPage">
             {/* <input placeholder='Website title' id="input-title" /> */}
@@ -114,15 +110,17 @@ export default function SheetPage({
             {
                 shareableLink && <TemplateSwapper template={template} setTemplate={setTemplate} />
             }
+            { shareableLink && <Preview /> }
+
+            {/* <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSBGMn0tCspTTTNjYdLIOtkbh1jG3HBVS66m0kVe8sxSjnyjQGNJpj4OtpOloGofV98mCnHWFNSMQx2/pubhtml?gid=193262248&amp;single=true&amp;widget=true&amp;headers=false&amp;range=A15:A16"></iframe> */}
+            {/* <iframe src="https://docs.google.com/spreadsheets/d/1YGIyDLS66GQv-0CKvmli079MahSutcIqWQl2eYqL_58/pubhtml?widget=true&headers=false&embedded=true"></iframe> */}
+            
             <div>
-                {/* <h2>{t('Your website')}</h2> */}
-                {/* <h2>Your Website</h2> */}
-                {/* <hr/> */}
                 <div className="Template-wrapper">
                   <TemplateSelector template={template} sheetData={sheetData} />
                 </div>
-                {/* <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vR7ldxMUU0El1dKqoTjw2ity1Ev_Tl_EwApkBG2OgoPPiUYjrYQ3e5b7pa4sDT9x8bncePp8kqh3rPq/pubhtml?widget=true&amp;headers=false" width="500px" height="500px"></iframe> */}
             </div>
+
             <div>
                 {loading && <LoadingPopup />}
             </div>

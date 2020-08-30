@@ -1,0 +1,62 @@
+// classnames are changed and this causes the transitions to trigger.
+// Styles are not change directly, just the parent classname is.
+// All CSS styles are compiled, but only parent of style is triggered.
+$anim-duration: 150ms;
+
+.EditableContentItemParent {
+    display: flex;
+    flex-wrap: wrap;
+
+    
+    .EditableContentItem{
+        span {
+            transition: all $anim-duration linear;
+        }
+
+        // Each style is a number
+        &._0 {
+            border: 1px solid black;
+            border-radius: 16px;
+            max-width: 33vw;
+            padding: 1rem .75rem;
+            margin: 8px;
+
+            span {
+                color: green;
+            }
+            .title {
+                font-size: 64px;
+                display: block;
+                text-align: center;
+            }
+            .date {
+                color: blue;
+                display: block;
+            }
+            .price {
+                font-size: 45px;
+                font-weight: 800;
+                display: block;
+
+                &:before {
+                    content: '';
+                }
+            }
+            .description {
+                color: black;
+            }
+        }
+
+        &._1 {
+            span {
+                color: blue;
+            }
+        }
+
+        &._2 {
+            span {
+                color: red;
+            }
+        }
+    }
+}

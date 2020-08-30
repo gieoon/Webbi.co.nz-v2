@@ -1,3 +1,5 @@
+import {API_ENDPOINT} from '../constants';
+
 /*
 export const ingestSpreadsheetData = (sheets) => {
     const output = {};
@@ -16,14 +18,12 @@ export const ingestSpreadsheetData = (sheets) => {
 */
 // After using different Sheets API, data comes back differently, but includes grid information, to get the colors we need.
 export const ingestSpreadsheetData = (sheets) => {
-    const output = {Content: {}, Settings: {}};
+    // const output = {Content: {}, Settings: {}};
+    const output = [];
     for(var sheet of sheets){
-        // console.log(sheet);
         var sheetName = sheet.sheetName;
         var rowValues = sheet.rowData;
         for(var cells of rowValues){
-            // console.log(cells, sheetName)
-            
             if(!cells.values) continue;
                 
             if(sheetName === 'Content'){
@@ -34,7 +34,6 @@ export const ingestSpreadsheetData = (sheets) => {
             }
         }
     }
-    console.log(output);
     return output;
 }
 
@@ -46,24 +45,50 @@ export const ingestSpreadsheetData = (sheets) => {
 //     'Font Size'
 // ]
 
+const extractContentOfCell = (values) => {
+    // console.log(values),
+    if(!values || !Object.keys(values).length) return "";
+    // return values.userEnteredValue.stringValue 
+    // || values.userEnteredValue.numberValue 
+    // || values.formattedValue;
+    return values.formattedValue
+    || values.userEnteredValue.stringValue 
+    || values.userEnteredValue.numberValue;
+}
+
 const handleContentSheet = (output, sheetValues) => {
-    console.log(sheetValues)
-    const id = sheetValues[0]?.userEnteredValue?.stringValue;
-    const content = (sheetValues[1]?.userEnteredValue?.stringValue || sheetValues[1]?.userEnteredValue?.numberValue);
-    const backgroundColor = convertColorFromObj(sheetValues[2]?.userEnteredFormat.backgroundColor || sheetValues[2]?.userEnteredFormat.backgroundColorStyle);
-    const color = convertColorFromObj(sheetValues[3]?.userEnteredFormat.backgroundColor || sheetValues[3]?.userEnteredFormat.backgroundColorStyle);
-    // const fontSize = sheetValues[4].textFormat.fontSize || 'initial';
-    const fontSize = (sheetValues[4]?.userEnteredValue?.numberValue || sheetValues[4]?.userEnteredValue?.stringValue || 'initial');
-    const borderRadius = (sheetValues[5]?.userEnteredValue?.stringValue || sheetValues[5]?.userEnteredValue?.numberValue) || 0;
-    const style = {
-        color, backgroundColor, fontSize, borderRadius,
-    };
+    // const id = sheetValues[0]?.userEnteredValue?.stringValue;
+    // const content = (sheetValues[1]?.userEnteredValue?.stringValue || sheetValues[1]?.userEnteredValue?.numberValue);
+    // const backgroundColor = convertColorFromObj(sheetValues[2]?.userEnteredFormat?.backgroundColor || sheetValues[2]?.userEnteredFormat?.backgroundColorStyle);
+    // const color = convertColorFromObj(sheetValues[3]?.userEnteredFormat?.backgroundColor || sheetValues[3]?.userEnteredFormat?.backgroundColorStyle);
+    // // const fontSize = sheetValues[4].textFormat.fontSize || 'initial';
+    // const fontSize = (sheetValues[4]?.userEnteredValue?.numberValue || sheetValues[4]?.userEnteredValue?.stringValue || 'initial');
+    // const borderRadius = (sheetValues[5]?.userEnteredValue?.stringValue || sheetValues[5]?.userEnteredValue?.numberValue) || 0;
+    // const style = {
+    //     color, backgroundColor, fontSize, borderRadius,
+    // };
     // console.log(style);
     // console.log(id, CONTENT_KEY_2_UI[id]);
-    output['Content'][CONTENT_KEY_2_UI[id]] = {
-        content: content,
-        style: style
-    }
+    var name, imgUrl, text, date, price;
+    if(!sheetValues.length) return output;
+    name = extractContentOfCell(sheetValues[0]);
+    imgUrl = extractContentOfCell(sheetValues[1]);
+    text = extractContentOfCell(sheetValues[2]);
+    date = extractContentOfCell(sheetValues[3]);
+    price = extractContentOfCell(sheetValues[4]);
+    
+    output.push({
+        name,
+        imgUrl,
+        text,
+        date,
+        price
+    });
+
+    // output['Content'][CONTENT_KEY_2_UI[id]] = {
+    //     content: content,
+    //     style: style
+    // }
 
     return output;
 }
@@ -107,6 +132,7 @@ const JS_CSS_2_UI = (val) => {
 }
 */
 const convertColorFromObj = (colorObj) => {
+    if(!colorObj) return "";
     return `rgba(${scale(colorObj.red)},${scale(colorObj.green)},${scale(colorObj.blue)},1)`;
 }
 
@@ -178,6 +204,26 @@ const STYLE_COLUMNS = [
     'color',
     'font-size',
 ]
+
+export const getStyles = async (name) => {
+    return fetch(`${API_ENDPOINT}/styles?component=${name}`,{
+        method: 'GET',
+        // mode: 'no-cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+    })
+    .then((response) => {
+        return response.json()
+    })
+    .then((d)=> {
+        console.log(d);
+        return d;
+    });
+}
 
 /*
 const createCSSForElement = (styles) => {

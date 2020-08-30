@@ -28,7 +28,7 @@ export default function LandingPage({
             Landing Page
 
             <input type="text" id="_projectName" placeholder="What to call your project" onChange={onProjectNameChange}/>
-            <Link to={'/pages/' + newUuid + '/' + projectName} >
+            <Link to={'/page/' + newUuid + '/' + projectName} >
                 <div 
                     //onClick={()=>{magic()}}
                 >Create your website in 3 minutes</div>

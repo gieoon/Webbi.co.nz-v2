@@ -1,0 +1,20 @@
+[
+    {
+        "backgroundColor": "blue",
+        "color": "red",
+        "fontSize": "125px",
+        "borderRadius": "32px" 
+    },
+    {
+        "backgroundColor": "black",
+        "color": "white",
+        "fontSize": "25px",
+        "borderRadius": "2px" 
+    },
+    {
+        "backgroundColor": "white",
+        "color": "black",
+        "fontSize": "12px",
+        "borderRadius": "50%" 
+    }
+]
