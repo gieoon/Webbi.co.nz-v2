@@ -5,7 +5,9 @@ import LandingPage from './components/LandingPage';
 import Pricing from './components/Pricing';
 import About from './components/About';
 import SheetPage from './components/SheetPage';
-
+import {
+  CLIENT_ROOT 
+} from './constants';
 import * as firebase from "firebase/app";
 import 'firebase/firestore';
 
@@ -29,23 +31,32 @@ function App() {
   return (
     <div className="App">
       <DebugRouter>
-        <Router>
-          <Switch>
-            <Route exact path='/'>
-              <LandingPage />
-            </Route>
-            <Route exact path='/pricing'>
-              <Pricing />
-            </Route>
-            <Route exact path='/about'>
-              <About />
-            </Route>
-            <Route path='/page/:shortId/:pageName?'>
-              <SheetPage />
-            </Route>
-            
-          </Switch>
-        </Router>
+        {
+          window.location.host.split('.')[0] !== CLIENT_ROOT 
+          ?<Router>
+              <div>
+                Rendering Subdomain here: 
+                {window.location.host.split('.')[0]}
+              </div>
+          </Router>
+          : <Router>
+            <Switch>
+              <Route exact path='/'>
+                <LandingPage />
+              </Route>
+              <Route exact path='/pricing'>
+                <Pricing />
+              </Route>
+              <Route exact path='/about'>
+                <About />
+              </Route>
+              <Route path='/page/:shortId/:pageName?'>
+                <SheetPage />
+              </Route>
+              
+            </Switch>
+          </Router>
+        }
       </DebugRouter>
     </div>
   );
