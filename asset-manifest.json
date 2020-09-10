@@ -1,0 +1,40 @@
+{
+  "files": {
+    "main.css": "/static/css/main.f93e0b33.chunk.css",
+    "main.js": "/static/js/main.6ebeb14b.chunk.js",
+    "main.js.map": "/static/js/main.6ebeb14b.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.131151fc.js",
+    "runtime-main.js.map": "/static/js/runtime-main.131151fc.js.map",
+    "static/js/2.a95090d1.chunk.js": "/static/js/2.a95090d1.chunk.js",
+    "static/js/2.a95090d1.chunk.js.map": "/static/js/2.a95090d1.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.f6dbec0a62ccb58ee4fd48c97dc87247.js": "/precache-manifest.f6dbec0a62ccb58ee4fd48c97dc87247.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.f93e0b33.chunk.css.map": "/static/css/main.f93e0b33.chunk.css.map",
+    "static/js/2.a95090d1.chunk.js.LICENSE": "/static/js/2.a95090d1.chunk.js.LICENSE",
+    "static/media/covid19live.png": "/static/media/covid19live.da17dfae.png",
+    "static/media/different.svg": "/static/media/different.314c0ef0.svg",
+    "static/media/imhired.png": "/static/media/imhired.5d45e873.png",
+    "static/media/j-signal2.png": "/static/media/j-signal2.eba8252b.png",
+    "static/media/justsayheyy.png": "/static/media/justsayheyy.7de70f97.png",
+    "static/media/logo_254.png": "/static/media/logo_254.306ae5d0.png",
+    "static/media/nzcommute.png": "/static/media/nzcommute.aae78d5a.png",
+    "static/media/nzcovid19live.png": "/static/media/nzcovid19live.7cf35719.png",
+    "static/media/ohmyperson.png": "/static/media/ohmyperson.82db3258.png",
+    "static/media/App.scss": "/static/media/orange.6da40f27.gif",
+    "static/media/piggybank.svg": "/static/media/piggybank.e75ab79e.svg",
+    "static/media/processhub.png": "/static/media/processhub.a124f6e5.png",
+    "static/media/reeftonhideaway.png": "/static/media/reeftonhideaway.ec520248.png",
+    "static/media/rocket.svg": "/static/media/rocket.f1bc7f03.svg",
+    "static/media/shield.svg": "/static/media/shield.bdfd77f4.svg",
+    "static/media/time.svg": "/static/media/time.87deaf0c.svg",
+    "static/media/whowrotethistext.png": "/static/media/whowrotethistext.accc7fbf.png",
+    "static/media/witch.svg": "/static/media/witch.a4d75d14.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.131151fc.js",
+    "static/js/2.a95090d1.chunk.js",
+    "static/css/main.f93e0b33.chunk.css",
+    "static/js/main.6ebeb14b.chunk.js"
+  ]
+}
