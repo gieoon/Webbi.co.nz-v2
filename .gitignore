@@ -7,3 +7,5 @@ server/db/sheets2website-1598313088115-firebase-adminsdk-qimn1-85abcb5d72.json
 build/
 node_modules/
 tracker/node_modules/
+google_sheets_credentials.json
+
