@@ -3,10 +3,10 @@ import {X} from 'react-feather';
 
 export default function TemplateSwapper({
     template, 
-    setTemplate
+    setTemplate,
+    showing,
+    setShowing,
 }){
-    const [expanded, setExpanded] = useState(false);
-
     const [templates, setTemplates] = useState([]);
     
     useEffect(()=>{
@@ -22,16 +22,24 @@ export default function TemplateSwapper({
     }, []);
 
     return (
-        <div className="TemplateSwapper">
-            <span onClick={()=>setExpanded(true)}>Swap template</span>
-            <X onClick={()=>{setExpanded(false)}}/>
-            {   expanded &&
-                Object.values(templates).map((v, index)=>(
-                    <div key={"template-" + index}>
-                        <TemplateItem template={v} setTemplate={setTemplate} currentTemplate={template} />
-                    </div>
-                ))
-            }
+        <div>
+            <div className={"TemplateOverlay " + (showing ? "show" : "")}>
+            </div>
+            <div className={"TemplateSwapper " + (showing ? "show" : "")}>
+                <div className="title-wrapper">
+                    <h2 onClick={()=>setShowing(true)}>Select a type of website</h2>
+                    <X onClick={()=>{setShowing(false)}} size={"2rem"} />
+                </div>
+                <div className="contents">
+                {
+                    Object.values(templates).map((v, index)=>(
+                        <div key={"template-" + index}>
+                            <TemplateItem template={v} setTemplate={setTemplate} currentTemplate={template} />
+                        </div>
+                    ))
+                }
+                </div>
+            </div>
         </div>
     )
 }
@@ -46,9 +54,8 @@ const TemplateItem = ({
             template.callback();
             setTemplate(template.name);
         }} className={"TemplateItem " + (currentTemplate === template.name ? 'selected' : '')}>
-            <span>{template.name}</span>
-            <br/>
-            <span>{template.description}</span>
+            <span className="title">{template.name}</span>
+            <span className="description">{template.description}</span>
         </div>
     )
 }

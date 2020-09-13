@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
-import TemplateSelector from './TemplateSelector';
+import TemplateRenderer from './TemplateRenderer';
 import TemplateSwapper from './TemplateSwapper'
 import {
-    Edit
+    Edit, 
+    Paperclip
 } from 'react-feather';
 
 import {
@@ -20,6 +21,7 @@ export default function SheetPage({
     const [spreadsheetId, setSpreadsheetId] = useState(null);
     const [sheetData, setSheetData] = useState([]); 
     const [template, setTemplate] = useState("Basic");
+    const [templateShowing, setTemplateShowing] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
@@ -88,6 +90,9 @@ export default function SheetPage({
                     <span>Edit your content</span>
                     <Edit />
                 </a>
+                <div onClick={()=>{setTemplateShowing(!templateShowing)}}>
+                    <span>Templates <Paperclip /></span>
+                </div>
             </div>
         )
     }
@@ -105,10 +110,10 @@ export default function SheetPage({
             {/* <input placeholder='Website title' id="input-title" /> */}
             {/* <div onClick={magic()}>Start new website</div> */}
             { shareableLink &&
-                <EditBtn />
-            }
-            {
-                shareableLink && <TemplateSwapper template={template} setTemplate={setTemplate} />
+                <div>
+                    <EditBtn />
+                    <TemplateSwapper showing={templateShowing} setShowing={setTemplateShowing} template={template} setTemplate={setTemplate} />
+                </div>
             }
             { shareableLink && <Publish /> }
 
@@ -117,7 +122,7 @@ export default function SheetPage({
             
             <div>
                 <div className="Template-wrapper">
-                  <TemplateSelector template={template} sheetData={sheetData} />
+                  <TemplateRenderer template={template} sheetData={sheetData} />
                 </div>
             </div>
 

@@ -9,6 +9,7 @@ export default function ContentList({
     const NUMBER_OF_STYLES = 3;
     const [currentStyleIndex, setCurrentStyleIndex] = useState(0);
 
+    console.log("contents: ", contents);
     return(
         <div>
             <div className="EditableContentItemParent">

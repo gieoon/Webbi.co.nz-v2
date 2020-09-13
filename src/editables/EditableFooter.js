@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import Editable from '../components/Editable';
 
-import webbi from '../assets/icon.png';
+// import webbi from '../assets/logo_254.png';
 
 export default function EditableFooter({
 
@@ -11,7 +11,9 @@ export default function EditableFooter({
     const component = <div ref={componentRef}>
         <span className="inner"></span>
         <div><span>
-            This website was built with Webbi <img src={webbi} alt="" /> in two minutes.
+            This website was built with <a href="https://www.webbi.xyz" target="_blank" rel="noopener noreferrer">Webbi </a>
+            {/* <img src={webbi} alt="" /> */}
+             {/* in two minutes. */}
         </span>
         </div>
     </div>

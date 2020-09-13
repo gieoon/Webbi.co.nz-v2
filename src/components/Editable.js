@@ -43,12 +43,14 @@ export default function Editable ({
     return(
         <div className="Editable">
             {component}
-            <ContentEditor content={content} setContent={setContent} />
-            <StyleSwitcher 
-                currentStyleIndex={currentStyleIndex}
-                setCurrentStyleIndex={setCurrentStyleIndex}
-                numberOfStyles={styles.length} 
-            />
+            <div className="controls">
+                <ContentEditor content={content} setContent={setContent} />
+                <StyleSwitcher 
+                    currentStyleIndex={currentStyleIndex}
+                    setCurrentStyleIndex={setCurrentStyleIndex}
+                    numberOfStyles={styles.length} 
+                />
+            </div>
         </div>
     );
 }

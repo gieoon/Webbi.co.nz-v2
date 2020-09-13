@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './Basic.scss';
 import {Mail, Phone, Twitter, Facebook, Linkedin, Instagram} from 'react-feather';
-import webbi from '../../assets/icon.png';
+import webbi from '../../assets/logo_254.png';
 import EditableHeader from '../../editables/EditableHeader';
 import EditableFooter from '../../editables/EditableFooter';
 import ContentList from '../ContentList';

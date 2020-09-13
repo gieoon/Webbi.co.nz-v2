@@ -3,7 +3,7 @@ import Basic from './Templates/Basic';
 import Event from './Templates/Event';
 import JobListing from './Templates/JobListing';
 
-export default function TemplateSelector({
+export default function TemplateRenderer({
     template,
     sheetData
 }){

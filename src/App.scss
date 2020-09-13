@@ -1,66 +1,130 @@
-$primary-color: orange;
-$hover-color: rgb(10, 196, 10);
+$primary-color: rgb(231, 164, 38);
+$hover-color: rgb(196, 115, 10);
 $selected-color: turquoise;
-$anim-duration: 150ms;
+$anim-duration: 125ms;
 
 .SheetPage {
+    overflow-x: hidden;
+
+    .TemplateOverlay {
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        opacity: 0;
+        transition: opacity $anim-duration linear;
+        
+        &.show {
+            opacity: .15;
+        }
+    }
+
     .TemplateSwapper {
         position: fixed;
-        background-color: $primary-color;
+        background-color: white;
         border-bottom-right-radius: 16px;
         transition: all $anim-duration linear;
         left: 0;
         top: 0;
-        height: 50px;
-        padding: 1rem;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        width: fit-content;
+        height: fit-content;
         color: rgba(0,0,0,.9);
+        transform: translateY(-100vh);
+        transition: all $anim-duration linear;
+        padding: 1rem;
+        z-index: 99;
+        border-radius: 4px;
+
+        &.show {
+            transform: translateY(0vh);
+        }
 
         span {
             line-height: .5rem;
         }
 
-        .TemplateItem {
-            background-color: {
+        .title-wrapper {
+            display: flex;
+            justify-content: space-between;
 
+            h2 {
+                margin: auto 0;
             }
 
-            &.selected {
-                background-color: $selected-color;
+            svg {
+                margin: auto 0;
+                cursor: pointer;
             }
         }
+        
+        .contents {
+            max-height: 75vh;
+            overflow: scroll;
 
-        &:hover {
-            background-color: $hover-color;
+            .TemplateItem {
+                background-color: $primary-color;
+                border-radius: 4px;
+                margin: .5rem auto;
+                padding: .5rem 1rem;
+                cursor: pointer;
+
+                &.selected {
+                    background-color: $selected-color;
+                }
+
+                &:hover {
+                    background-color: $hover-color;
+                }
+
+                .title {
+                    color: white;
+                    font-weight: 600;
+                    font-size: 1.2rem;
+                }
+
+                .description {
+                    margin-top: .25rem;
+                    display: block;
+                    color: white;
+                    font-weight: 200;
+                    font-size: 1rem;
+                }
+            }
         }
     }
 
     .EditBtn {
         background-color: $primary-color;
-        padding: 1rem;
+        padding: .2rem 1rem;
         text-align: center;
         cursor: pointer;
         transition: all $anim-duration linear;
         position: fixed;
-        margin: auto;
+        // margin: auto;
         left: 0;
-        right: 0;
         top: 0;
+        z-index: 98;
         width: fit-content;
-        border-bottom-left-radius: 16px;
-        border-bottom-right-radius: 16px;
+        border-bottom-right-radius: 4px;
 
         a {
             color: white!important;
 
-            span {
-                line-height: .5rem;
-            }
+            
+        }
+
+        span {
+            line-height: .5rem;
+            font-size: .75rem;
+            margin-right: 6px;
         }
 
 
         &:hover {
             background-color: $hover-color;
-            opacity: .5;
         }
     }
 
@@ -74,6 +138,7 @@ $anim-duration: 150ms;
         cursor: pointer;
         transition: all $anim-duration linear;
         position: fixed;
+        z-index: 98;
         border-bottom-left-radius: 16px;
 
         &:hover {
@@ -167,8 +232,24 @@ $anim-duration: 150ms;
 // Upon highlighting objects to be changed
 .Editable {
     transition: all $anim-duration linear;
-    &:hover {
-        background-color: grey;
+    position: relative;
+
+    .controls {
+        pointer-events: none;
+        opacity: 0;
+        position: absolute;
+        z-index: 99;
+        background-color: white;
+        border-bottom-left-radius: 4px;
+        padding: .25rem;
+        box-shadow: 1px 1px 1px rgba(0,0,0,.15);
+        top: 0; 
+        right: 0;  
+    }
+
+    &:hover .controls {
+        opacity: 1;
+        pointer-events: all;
     }
 
     * {
