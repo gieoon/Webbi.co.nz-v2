@@ -21,7 +21,7 @@ app.get('/new', (req, res) => {
   DB.checkIfShortIdExists(req.query.shortId).then((document)=>{
     if(!document){
       console.log('Creating new document');
-      createNewSpreadsheet(req.query.name, req.get('Referrer')).then((result)=>{
+      createNewSpreadsheet(req.query.name, req.query.templateName, req.get('Referrer')).then((result)=>{
         // res.setHeader('Content-Type', 'text/html');
         // res.setHeader('Content-Type', 'application/json');
         // res.send(JSON.stringify({link: shareableLink}));
@@ -56,10 +56,10 @@ app.listen(PORT, () => {
   console.log('Listening on port: ', PORT);
 })
 
-const createNewSpreadsheet = async (name, referrer) => {
+const createNewSpreadsheet = async (name, templateName, referrer) => {
   const spreadsheetId = await S.createSpreadsheet(name);//await require('./db.js').getSpreadsheetIdAndCreateIfDoesntExist(userId, query.queryId, query.name);
   console.log('spreadsheetId: ', spreadsheetId);
-  await S.createContentDefaults(spreadsheetId, name);
+  await S.createContentDefaults(spreadsheetId, name, templateName);
   // await S.addSettingsSheet(spreadsheetId);
   // await S.addSettingsDefaults(spreadsheetId);
   await S.updateSheetProperties(spreadsheetId, referrer);

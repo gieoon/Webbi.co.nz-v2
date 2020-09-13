@@ -11,7 +11,10 @@ export default function Pricing({
             <p>Set up your website cost efficiently. Update your content without consulting anyone.</p>
 
             <div className="Wrapper">
-                <PricingCard pricingType="Basic" bulletPoints={["Website from a template", "One-off fee", "Easy updates via Google Sheets", "Connect to a custom domain"]} price="$50 USD" />
+                <PricingCard pricingType="Free" bulletPoints={["2 minute website creation", "Instant publishing", "Easy updates via Google Sheets","Webbi ad text"]} price="$0 USD Forever" />
+                <PricingCard pricingType="Basic" bulletPoints={["Website from a template", "Easy updates via Google Sheets", "Connect to a custom domain", "No Webbi ad text"]} price="$6/Month USD" />
+                <PricingCard pricingType="Basic" bulletPoints={["Website from a template", "Easy updates via Google Sheets", "Connect to a custom domain"]} price="$5/Month USD (Annual purchase)" />
+                {/* <PricingCard pricingType="E-Commerce" bulletPoints={["Website from a template", "One-off fee", "Easy updates via Google Sheets", "Accept online payments"]} price="$6/Month USD" /> */}
                 <PricingCard pricingType="Custom" bulletPoints={["Talk to sales about your custom design", "You can instantly update the website yourself", "No ongoing costs"]} price="Contact Sales" />
             </div>
 

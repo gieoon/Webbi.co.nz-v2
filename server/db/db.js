@@ -52,3 +52,15 @@ exports.checkIfShortIdExists = async (shortId) => {
 
   // return Promise.all(promise);
 }
+
+exports.getTemplateColumns = async (templateName) => {
+  return db.collection('Constants')
+      .doc('Templates')
+      .get()
+      .then((doc)=>{
+        console.log('Retrieved templates: ', doc.get(templateName));
+        return doc.get(templateName).columns;
+      }).catch(err => {
+        console.error("Error retrieving templates: ", err);
+      })
+}

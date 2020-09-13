@@ -19,7 +19,7 @@ export default function SheetPage({
     const [shareableLink, setShareableLink] = useState(null);
     const [spreadsheetId, setSpreadsheetId] = useState(null);
     const [sheetData, setSheetData] = useState([]); 
-    const [template, setTemplate] = useState("");
+    const [template, setTemplate] = useState("Basic");
     const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
@@ -34,7 +34,7 @@ export default function SheetPage({
             },
         }
         
-        fetch(`${API_ENDPOINT}/new?shortId=${shortId}&name=${pageName}`, options)
+        fetch(`${API_ENDPOINT}/new?shortId=${shortId}&name=${pageName}&templateName=${template}`, options)
             .then(response => {
                 // console.log(response);
                 // return response.json();

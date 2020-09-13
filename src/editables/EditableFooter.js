@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import Editable from '../components/Editable';
-import {Mail, Phone, Twitter, Facebook, Linkedin, Instagram} from 'react-feather';
+
 import webbi from '../assets/icon.png';
 
 export default function EditableFooter({
@@ -9,15 +9,11 @@ export default function EditableFooter({
     
     const componentRef = useRef();
     const component = <div ref={componentRef}>
-        <div>  
-            <Mail />
-            <Phone />
-            <Twitter />
-            <Facebook />
-            <Linkedin />
-            <Instagram />
-        </div>
         <span className="inner"></span>
+        <div><span>
+            This website was built with Webbi <img src={webbi} alt="" /> in two minutes.
+        </span>
+        </div>
     </div>
 
     return (

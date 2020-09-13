@@ -1,7 +1,8 @@
+// const { GoogleSpreadsheet } = require('google-spreadsheet');
+
 const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
-const DB = require('../db/db.js');
 const { GoogleAuth } = require('google-auth-library');
 
 const {SPREADSHEET_READ_RANGES} = require('../constants.js');
@@ -19,6 +20,11 @@ var auth;
 const init = async () => {
 	
 	// spreadsheet key is the long id in the sheets URL
+	// const doc = new GoogleSpreadsheet('1fL0rD6ee89CKTPyewDWoC0Eu-IXvN77esSceTXlVPVg');
+	
+	// await doc.useServiceAccountAuth(
+	// 	require('./sheets2website-1598313088115-2e587adb38c8.json')
+	// );
 	process.env.GOOGLE_APPLICATION_CREDENTIALS = './spreadsheet/sheets2website-1598313088115-2e587adb38c8.json';
 	auth = await getAuthToken();
 	sheets = google.sheets({version: 'v4', auth});
@@ -45,29 +51,43 @@ async function getAuthToken() {
 
 exports.createContentDefaults = function(spreadsheetId, name){
 	// Add empty spaces to stop overflowing
+	/*
+	const values = [
+		['Page Element','Content','Background Color', 'Text Color', 'Font Size', 'Border Radius'],
+		['Page Title', name,' ', ' ', ' '], 
+		['Header at Top','My New Website',' ', '', ''], 
+		['Section 1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',' ', '', ''],
+		['Section 2', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',' ', '', ''],
+		['Section 3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',' ', '', ''],
+		['Email', 'example@gmail.com',' ', '', ''],
+		['Phone Number', '0221231232',' ', '', ''],
+		['Mobile Number', '0221231232',' ', '', ''],
+		['Facebook', 'https://facebook.com/',' ', '', ''],
+		['LinkedIn', 'https://linkedin.com',' ', '', ''],
+		['Instagram', 'https://instagram.com',' ', '', ''],
+		['Twitter', 'https://twitter.com',' ', '', ''],
+		['Footer', 'Built with Webbi',' ', '', ''],
+	];
+	*/
 	// Adding new data so most of this is done in frontend, and only list is in backend.
-    DB.getTemplateColumns(name).then(columns => {
-        const values = [
-            //['Name','Image link','Description','Date', 'Location', 'Price', 'Additional content']
-            columns
-        ];
-        console.log("columns: ", columns)
-        // console.dir(values);
-        var resource = { values };
-        var request = {
-            spreadsheetId: spreadsheetId,
-            range: `Content!A1:G${values.length}`,
-            // range: "Content!A1:E20",
-            valueInputOption: 'USER_ENTERED',
-            resource
-        };
-        sheets.spreadsheets.values.append(request, function(err, response){
-            if(err){
-                console.error('Error writing default headers to spreadsheet: ', err);
-                return;
-            }
-        });  
-    })
+	const values = [
+		['Name','Image link','Description','Date', 'Price', 'Additional content']
+	];
+	// console.dir(values);
+	var resource = { values };
+	var request = {
+		spreadsheetId: spreadsheetId,
+		range: `Content!A1:G${values.length}`,
+		// range: "Content!A1:E20",
+		valueInputOption: 'USER_ENTERED',
+		resource
+	};
+	sheets.spreadsheets.values.append(request, function(err, response){
+		if(err){
+			console.error('Error writing default headers to spreadsheet: ', err);
+			return;
+		}
+	});
 }
 
 exports.createSpreadsheet = async function(title){
