@@ -1,3 +1,5 @@
+// Tracks the requests that are being sent out to identify image URL's directly, if the user doesn't want to be using links and instead upload directly to the sheet.
+
 const puppeteer = require('puppeteer');
 
 const URL = 

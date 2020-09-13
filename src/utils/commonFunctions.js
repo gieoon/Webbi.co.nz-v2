@@ -46,14 +46,15 @@ export const ingestSpreadsheetData = (sheets) => {
 // ]
 
 const extractContentOfCell = (values) => {
-    // console.log(values),
+    console.log(values);
     if(!values || !Object.keys(values).length) return "";
     // return values.userEnteredValue.stringValue 
     // || values.userEnteredValue.numberValue 
     // || values.formattedValue;
     return values.formattedValue
-    || values.userEnteredValue.stringValue 
-    || values.userEnteredValue.numberValue;
+    || values?.userEnteredValue?.stringValue 
+    || values?.userEnteredValue?.numberValue
+    || "";
 }
 
 const handleContentSheet = (output, sheetValues) => {

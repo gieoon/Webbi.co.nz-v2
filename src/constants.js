@@ -1,9 +1,9 @@
 export const ENVIRONMENT = 
-    // "DEVELOP"; 
-    "PRODUCTION";
+    "DEVELOP"; 
+    // "PRODUCTION";
 
 export const CLIENT_ROOT = ENVIRONMENT === "DEVELOP"
-    ? 'localhost'
+    ? 'localhost:3000'
     : 'webbi';
 
 export const API_ENDPOINT = ENVIRONMENT === "DEVELOP" 

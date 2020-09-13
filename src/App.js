@@ -27,6 +27,8 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 global.db = db;
 
+// console.log(window.location.host.split('.')[0] )
+
 function App() {
   return (
     <div className="App">

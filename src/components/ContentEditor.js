@@ -5,7 +5,7 @@ export default function ContentEditor({
     setContent,
 }){
     const handleChange = (e) => {
-        console.log(e)
+        // console.log(e)
         setContent(e.target.value)
     }
     return(

@@ -92,10 +92,10 @@ export default function SheetPage({
         )
     }
 
-    const Preview = () => {
+    const Publish = () => {
         return (
-            <div className="Preview">
-                <span>Preview</span>
+            <div className="Publish">
+                <span>Publish</span>
             </div>
         )
     }
@@ -110,7 +110,7 @@ export default function SheetPage({
             {
                 shareableLink && <TemplateSwapper template={template} setTemplate={setTemplate} />
             }
-            { shareableLink && <Preview /> }
+            { shareableLink && <Publish /> }
 
             {/* <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSBGMn0tCspTTTNjYdLIOtkbh1jG3HBVS66m0kVe8sxSjnyjQGNJpj4OtpOloGofV98mCnHWFNSMQx2/pubhtml?gid=193262248&amp;single=true&amp;widget=true&amp;headers=false&amp;range=A15:A16"></iframe> */}
             {/* <iframe src="https://docs.google.com/spreadsheets/d/1YGIyDLS66GQv-0CKvmli079MahSutcIqWQl2eYqL_58/pubhtml?widget=true&headers=false&embedded=true"></iframe> */}
