@@ -23,12 +23,14 @@ export default function TemplateSwapper({
 
     return (
         <div>
-            <div className={"TemplateOverlay " + (showing ? "show" : "")}>
+            <div className={"TemplateOverlay " + (showing ? "show" : "")} 
+                onClick={()=>{setShowing(false)}}
+            >
             </div>
             <div className={"TemplateSwapper " + (showing ? "show" : "")}>
                 <div className="title-wrapper">
                     <h2 onClick={()=>setShowing(true)}>
-                        Select your page
+                        Select your website category
                     </h2>
                     <X onClick={()=>{setShowing(false)}} size={"2rem"} />
                 </div>
@@ -51,6 +53,7 @@ const TemplateItem = ({
     setTemplate,
     currentTemplate,
 }) => {
+    console.log(template.name);
     return(
         <div onClick={()=>{
             template.callback();

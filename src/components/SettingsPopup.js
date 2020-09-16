@@ -53,7 +53,9 @@ export default function SettingsPopup({
                         <h4>Text on page</h4>
                         {/* Demo of where favicon is displayed on the browser in the help */}
                         {/* <ImgObj id="favicon" value={currentSettings.faviconUrl} placeholder="Favicon" /> */}
-                        
+                        <FileObj id="faviconImg" value={currentSettings.faviconImg} placeholder="Favicon Image URL" help="The image that appears at the top of your browser, paste an image URL" />
+                        <FileObj id="logoImg" value={currentSettings.logoImg} placeholder="Your Logo URL" help="A logo image to represent your brand, paste an image URL" />
+
                         <InputObj id="title" value={currentSettings.title} placeholder="Title" />
                         <InputObj id="navTitle" value={currentSettings.navTitle} placeholder="Navigator title" />
                         <InputObj id="header" value={currentSettings.header} placeholder="Header" />
@@ -63,8 +65,25 @@ export default function SettingsPopup({
                         <TextAreaObj id="section1Description" value={currentSettings.section1Description} placeholder="Top Section Description" />
                         <InputObj id="cta" value={currentSettings.cta} placeholder="Call To Action" help="Convince your customers to perform an action" />
                     </div>
+                    <div className="content-selling-wrapper">
+                        <h4>Selling points</h4>
+                        <InputObj id="whyMeHeader" value={currentSettings.whyMeHeader} placeholder="Title for your selling points" help="Title text to put above your selling points" />
+                        <InputObj id="whyMeDescription" value={currentSettings.whyMeDescription} placeholder="Description for your selling points" help="Description of your selling points" />
+                        <FileObj id="whyMeImg1" value={currentSettings.whyMeImg1} placeholder="Image URL for selling point" help="Link to an Image URL to describe your selling point" />
+                        <InputObj id="whyMeTitle1" value={currentSettings.whyMeTitle1} placeholder="Selling point title" help="What makes you unique?" />
+                        <TextAreaObj id="whyMeDescription1" value={currentSettings.whyMeDescription1} placeholder="Description for your selling point" />
+                        <FileObj id="whyMeImg2" value={currentSettings.whyMeImg2} placeholder="Image URL for selling point" help="Link to an Image URL to describe your selling point" />
+                        <InputObj id="whyMeTitle2" value={currentSettings.whyMeTitle2} placeholder="Selling point title" help="What makes you unique?" />
+                        <TextAreaObj id="whyMeDescription2" value={currentSettings.whyMeDescription2} placeholder="Description for your selling point" />
+                        <FileObj id="whyMeImg3" value={currentSettings.whyMeImg3} placeholder="Image URL for selling point" help="Link to an Image URL to describe your selling point" />
+                        <InputObj id="whyMeTitle3" value={currentSettings.whyMeTitle3} placeholder="Selling point title" help="What makes you unique?" />
+                        <TextAreaObj id="whyMeDescription3" value={currentSettings.whyMeDescription3} placeholder="Description for your selling point" />
+                        <FileObj id="whyMeImg4" value={currentSettings.whyMeImg4} placeholder="Image URL for selling point" help="Link to an Image URL to describe your selling point" />
+                        <InputObj id="whyMeTitle4" value={currentSettings.whyMeTitle4} placeholder="Selling point title" help="What makes you unique?" />
+                        <TextAreaObj id="whyMeDescription4" value={currentSettings.whyMeDescription4} placeholder="Description for your selling point" />
+                    </div>
                     <div className="content-images-wrapper">
-                        <h4>Images (Link to Image URLs)</h4>
+                        <h4>Images (link to URLs)</h4>
                         <FileObj id="backgroundImgUrl1" value={currentSettings.backgroundImgUrl1} placeholder="Image URL" help="First Background Image" />
                         <FileObj id="backgroundImgUrl2" value={currentSettings.backgroundImgUrl1} placeholder="Image URL" help="Second Background Image" />
                         <FileObj id="backgroundImgUrl3" value={currentSettings.backgroundImgUrl1} placeholder="Image URL" help="Third Background Image" />

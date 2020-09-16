@@ -10,6 +10,7 @@ import webbi from '../../assets/logo_254.png';
 import EditableHeader from '../../editables/EditableHeader';
 import EditableFooter from '../../editables/EditableFooter';
 import ContentList from '../ContentList';
+import EmptySheetData from '../EmptySheetData';
 
 import {WEBBI_ADDRESS} from '../../constants';
 import {convertDriveURL} from '../../utils/commonFunctions';
@@ -59,12 +60,12 @@ export default function LandingPage({
                             <li className="nav-item">
                                 <a className="nav-link js-scroll-trigger" href="#about" style={{pointerEvents: "initial"}}>About</a>
                             </li>
-                            {/* <li className="nav-item">
+                            <li className="nav-item">
                                 <a className="nav-link js-scroll-trigger" href="#services" style={{pointerEvents: "initial"}}>Services</a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link js-scroll-trigger" href="#portfolio" style={{pointerEvents: "initial"}}>Portfolio</a>
-                            </li> */}
+                            </li>
                             <li className="nav-item">
                                 <a className="nav-link js-scroll-trigger" href="#contact" style={{pointerEvents: "initial"}}>Contact</a>
                             </li>
@@ -111,14 +112,65 @@ export default function LandingPage({
                             {/* <a className="btn btn-light btn-xl js-scroll-trigger" href="#services" style={{pointerEvents:"initial"}}>
                                 Get Started!
                             </a> */}
-                            <ContentList contents={sheetData}  />
                         </div>
                     </div>
                 </div>
+                <SheetContent sheetData={sheetData} />
             </section>
 
-            <footer className="bg-light py-5">
+            <section className="page-section" id="services">
                 <div className="container">
+                    <h2 className="text-center mt-0">
+                        {websiteContent.whyMeHeader}
+                    </h2>
+                    <hr className="divider my-4" />
+                    <div className="col-lg-8 align-self-baseline text-center" style={{margin:"auto"}}>
+                        <p className="text-black-75 font-weight-light mb-5 text-center">
+                            {websiteContent.whyMeDescription}
+                        </p>
+                    </div>
+                    
+                    <div className="row">
+                        <div className="col-lg-3 col-md-6 text-center">
+                            <div className="mt-5">
+                                <img src={convertDriveURL(websiteContent.whyMeImg1)} alt="" />
+                                <h3>{websiteContent.whyMeTitle1}</h3>
+                                <p>{websiteContent.whyMeDescription1}</p>
+                            </div>
+                        </div>
+                        <div className="col-lg-3 col-md-6 text-center">
+                            <div className="mt-5">
+                                <img src={convertDriveURL(websiteContent.whyMeImg2)} alt="" />
+                                <h3>{websiteContent.whyMeTitle2}</h3>
+                                <p>{websiteContent.whyMeDescription2}</p>
+                            </div>
+                        </div>
+                        <div className="col-lg-3 col-md-6 text-center">
+                            <div className="mt-5">
+                                <img src={convertDriveURL(websiteContent.whyMeImg3)} alt="" />
+                                <h3>{websiteContent.whyMeTitle3}</h3>
+                                <p>{websiteContent.whyMeDescription3}</p>
+                            </div>
+                        </div>
+                        <div className="col-lg-3 col-md-6 text-center">
+                            <div className="mt-5">
+                                <img src={convertDriveURL(websiteContent.whyMeImg4)} alt="" />
+                                <h3>{websiteContent.whyMeTitle4}</h3>
+                                <p>{websiteContent.whyMeDescription4}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            {/* <div id="portfolio"> */}
+                {/* <ContentList contents={sheetData}  /> */}
+                
+            {/* </div> */}
+
+            <footer className="bg-light py-5">
+                <div className="container" id="contact">
                     <h5 style={{textAlign: "center",marginBottom:"1rem"}}>{websiteContent.cta}</h5>
                     <div style={{display:"flex",justifyContent:"center",flexDirection:"row",marginBottom:".75rem"}}>
                         <div>
@@ -132,7 +184,7 @@ export default function LandingPage({
                             <img src={phoneImg} alt=""/>
                             <span>{websiteContent.phone}</span>
                         </div>
-                        <div style={{width:"3srem"}}></div>
+                        <div style={{width:"3rem"}}></div>
                         <div style={{display:"flex",justifyContent:"center",flexDirection:"row"}}>
                             {websiteContent.facebook && <Social imgSrc={facebookImg} url={websiteContent.facebook} />}
                             {websiteContent.linkedin && <Social imgSrc={linkedinImg} url={websiteContent.linkedin} />}
@@ -162,6 +214,37 @@ const Social = ({
                 <img src={imgSrc} alt="" />
             </a>
         </div>
+    )
+}
+
+const SheetContent = ({sheetData}) => {
+    return(
+        <>
+        { sheetData.length 
+            ? <div className="container-fluid p-0">
+                <div className="row no-gutters">
+                    {
+                        sheetData.map((data) => (
+                            <div className="col-lg-4 col-sm-6">
+                                <a className="portfolio-box" href="" style={{pointerEvents:"initial"}}>
+                                    <img className="img-fluid" src={convertDriveURL(data.imgUrl)} alt={data.title} />
+                                    <div className="portfolio-box-caption">
+                                        <div className="project-name">
+                                            {data.title}
+                                        </div>
+                                        <div className="project-category text-white-50">
+                                            {data.description}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        : <EmptySheetData /> 
+        }
+        </>
     )
 }
 
