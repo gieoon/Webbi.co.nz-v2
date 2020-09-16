@@ -19,6 +19,8 @@ export const SHEETS_DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/
 // included, separated by spaces.
 // Used for OAuth2
 export const SHEETS_SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
+
+export const WEBBI_ADDRESS = "https://webbi.xyz";
 /*
 export const SHEETS_SCOPES = [
     'https://www.googleapis.com/auth/analytics.readonly',

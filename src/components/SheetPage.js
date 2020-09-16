@@ -2,9 +2,14 @@ import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import TemplateRenderer from './TemplateRenderer';
 import TemplateSwapper from './TemplateSwapper'
+import SettingsPopup from './SettingsPopup';
+import Loading from './Loading';
 import {
     Edit, 
-    Paperclip
+    Grid,
+    Paperclip,
+    Settings,
+    Check,
 } from 'react-feather';
 
 import {
@@ -20,8 +25,10 @@ export default function SheetPage({
     const [shareableLink, setShareableLink] = useState(null);
     const [spreadsheetId, setSpreadsheetId] = useState(null);
     const [sheetData, setSheetData] = useState([]); 
-    const [template, setTemplate] = useState("Basic");
+    const [template, setTemplate] = useState("LandingPage");
     const [templateShowing, setTemplateShowing] = useState(false);
+    const [websiteContent, setWebsiteContent] = useState({});
+    const [settingsPopupShowing, setSettingsPopupShowing] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
@@ -35,6 +42,12 @@ export default function SheetPage({
                 'Access-Control-Allow-Origin': '*'
             },
         }
+
+        loadConfigurationFromDB(shortId).then((userConfiguration)=>{
+            console.log('userconfiguration: ', userConfiguration)
+        })
+
+        loadCurrentWebsiteContentFromDB(shortId, (c)=>{setWebsiteContent(c)});
         
         fetch(`${API_ENDPOINT}/new?shortId=${shortId}&name=${pageName}&templateName=${template}`, options)
             .then(response => {
@@ -76,7 +89,7 @@ export default function SheetPage({
                         // console.log('d: ', d);
                         setSheetData(d);
                         // setTemplate(d.Settings?.Template);
-                        setTemplate("BASIC");
+                        setTemplate("LANDING_PAGE");
                         // console.log(json, d);
                         setLoading(false);
                     })
@@ -86,12 +99,18 @@ export default function SheetPage({
     const EditBtn = () => {
         return (
             <div className="EditBtn">
-                <a href={shareableLink} rel="noopener noreferrer" target="_blank">
-                    <span>Edit your content</span>
-                    <Edit />
-                </a>
+                <div>
+                    <a id="spreadsheetLink" href={shareableLink} rel="noopener noreferrer" target="_blank">
+                    {/* <span>Edit your content</span> */}
+                        <Grid className="SheetSVG" />
+                    </a>
+                </div>
                 <div onClick={()=>{setTemplateShowing(!templateShowing)}}>
-                    <span>Templates <Paperclip /></span>
+                    {/* <span>Templates </span> */}
+                    <Paperclip color="white" className="SheetSVG" />
+                </div>
+                <div onClick={()=>{setSettingsPopupShowing(!settingsPopupShowing)}}>
+                    <Settings color="white" className="SheetSVG" />
                 </div>
             </div>
         )
@@ -100,7 +119,9 @@ export default function SheetPage({
     const Publish = () => {
         return (
             <div className="Publish">
-                <span>Publish</span>
+                <span>
+                    <Check color="green" className="SheetSVG"/>
+                </span>
             </div>
         )
     }
@@ -112,7 +133,12 @@ export default function SheetPage({
             { shareableLink &&
                 <div>
                     <EditBtn />
-                    <TemplateSwapper showing={templateShowing} setShowing={setTemplateShowing} template={template} setTemplate={setTemplate} />
+                    <TemplateSwapper 
+                        showing={templateShowing} 
+                        setShowing={setTemplateShowing} 
+                        template={template} 
+                        setTemplate={setTemplate} 
+                    />
                 </div>
             }
             { shareableLink && <Publish /> }
@@ -122,22 +148,41 @@ export default function SheetPage({
             
             <div>
                 <div className="Template-wrapper">
-                  <TemplateRenderer template={template} sheetData={sheetData} />
+                    <TemplateRenderer 
+                        template={template} 
+                        sheetData={sheetData} 
+                        pageName={pageName}
+                        websiteContent={websiteContent}
+                    />
                 </div>
             </div>
 
-            <div>
-                {loading && <LoadingPopup />}
-            </div>
+            <SettingsPopup showing={settingsPopupShowing} setShowing={setSettingsPopupShowing} shortId={shortId} currentSettings={websiteContent} />
+
+            <Loading loading={loading} />
         </div>  
     )
 }
 
-// Use useTrail here, to make it sparkle.
-const LoadingPopup = () => {
-    return(
-        <div className="Loading">
-            LOADING...
-        </div>
-    )
+
+const loadConfigurationFromDB = async (shortId) => {
+    if(!global.db) return;
+    return global.db.collection('UserConfigurations')
+        .doc(shortId)
+        .get()
+        .then((doc)=>{
+            console.log('Success loading configuration from DB: ', doc.data())
+            return doc.data();
+        }).catch(err => {console.error("Error loading configuration from DB: ", err)});
+}
+
+const loadCurrentWebsiteContentFromDB = async (shortId, cb) => {
+    if(!global.db) return;
+    return global.db.collection('WebsiteContent')
+        .doc(shortId)
+        .onSnapshot(doc => {
+            console.log('Success loading website content from DB');
+            cb(doc.data());
+        })
+        //.catch(err => console.error("Error loading Website Content from DB"))
 }

@@ -8,6 +8,11 @@ import SheetPage from './components/SheetPage';
 import {
   CLIENT_ROOT 
 } from './constants';
+
+import './dist/loading.scss';
+
+// Start of Firebase
+
 import * as firebase from "firebase/app";
 import 'firebase/firestore';
 
@@ -23,11 +28,10 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-// console.log(firebase);
 const db = firebase.firestore();
 global.db = db;
 
-// console.log(window.location.host.split('.')[0] )
+// End of Firebase
 
 function App() {
   return (

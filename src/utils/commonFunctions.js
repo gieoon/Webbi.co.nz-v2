@@ -16,6 +16,24 @@ export const ingestSpreadsheetData = (sheets) => {
     return output;
 }
 */
+
+
+// Drive URL's need to be updated to an alternate address to work.
+// In the future, this needs to cater to 'Insert in Cell' data.
+export const convertDriveURL = (imgUrl) => {
+    // Update Drive URL to a separate one on display
+    if(imgUrl.includes('https://drive.google.com/file/d/')){
+        // Extract fileId from URL
+        const regex = /(?<=d\/)(.*)(?=\/view)/;
+        var fileIds = imgUrl.match(regex);
+        if(!fileIds.length) return imgUrl;
+        var fileId = fileIds[0];
+        var newUrl = "https://drive.google.com/uc?export=view&id=" + fileId;
+        return newUrl;
+    }
+    return imgUrl;
+}
+
 // After using different Sheets API, data comes back differently, but includes grid information, to get the colors we need.
 export const ingestSpreadsheetData = (sheets) => {
     // const output = {Content: {}, Settings: {}};

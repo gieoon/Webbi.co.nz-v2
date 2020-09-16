@@ -1,0 +1,57 @@
+// .Basic {
+//     #C_TOP_HEADER {
+//         text-align: center;
+//     }
+
+//     #C_FOOTER {
+//         display: flex;
+//     }
+
+//     #footer {
+//         font-size: 12px;
+//     }
+// }
+
+@import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+.LandingPage {
+    .btn-primary {
+        // background-color: $primary-color!important;
+        // transition: background-color 125ms linear;
+
+        &:hover {
+            // background-color: $hover-color!important;
+        }
+    }
+
+    header.masthead {
+        // filter: grayscale(80%);
+
+        h1 {
+            font-size: 3rem!important;
+        }
+
+        #title-area {
+            // background-color: rgba(0,0,0,.65);
+            // padding: 1rem;
+        }
+    }
+
+    footer {
+        img {
+            height: 2.5rem;
+            cursor: pointer;
+            margin-right: .75rem;
+        }
+    }
+
+    #navbarResponsive {
+        height: 0;
+        // display: block!important;
+        transition: all 125ms ease-in-out;
+
+        &.show {
+            height: fit-content;
+        }
+    }
+}

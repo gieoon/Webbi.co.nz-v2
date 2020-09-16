@@ -27,7 +27,9 @@ export default function TemplateSwapper({
             </div>
             <div className={"TemplateSwapper " + (showing ? "show" : "")}>
                 <div className="title-wrapper">
-                    <h2 onClick={()=>setShowing(true)}>Select a type of website</h2>
+                    <h2 onClick={()=>setShowing(true)}>
+                        Select your page
+                    </h2>
                     <X onClick={()=>{setShowing(false)}} size={"2rem"} />
                 </div>
                 <div className="contents">
